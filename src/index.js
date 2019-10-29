@@ -1,12 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter, Route } from 'react-router-dom';
+import Game from './components/game'
+import PosGrid from './components/posibilities_grid'
 
 import "./styles.css";
-import Grid from './components/grid'
 
 function App() {
 
-  return (<Grid></Grid>)
+  return (
+    <BrowserRouter>
+      <Game />
+ 
+    </BrowserRouter>
+  )
 }
 
 const rootElement = document.getElementById("root");

@@ -1,4 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
+import Arrows from "./arrows";
+import Script from "./script";
+import SwitchMode from "./switch_mode";
+import { checkRobotState } from "./util";
+import RobotStateDisplay from './robot_state_display'
 
 export default function Robot({
     id,
@@ -7,9 +12,9 @@ export default function Robot({
     robotPos,
     setRobotPos
 }) {
+    const [devMode, setDevMode] = useState(true);
     const [trashColleted, setTrashCollected] = useState(0);
     const [moves, setMoves] = useState(0);
-    const [script, setScript] = useState("");
     const grid = useRef(gridArray);
 
     // restart grid
@@ -17,8 +22,6 @@ export default function Robot({
         setMoves(0);
         setTrashCollected(0);
     }, [gridArray]);
-
-    
 
     function inputHandle(move) {
         let nextPos, hasTrashNext;
@@ -66,6 +69,7 @@ export default function Robot({
 
     const arrowKeyListener = () => {
         document.onkeydown = function(e) {
+            if (!devMode) return;
             switch (e.keyCode) {
                 case 37:
                     inputHandle("left");
@@ -84,59 +88,11 @@ export default function Robot({
             }
         };
     };
-
     arrowKeyListener();
-
-    function checkPos(direction) {
-        let hasTrashNext;
-        let [col, row] = robotPos;
-
-        switch (direction) {
-            case "up":
-            case "UP":
-                if (row - 1 < 0) {
-                    return "WALL";
-                } else {
-                    hasTrashNext = gridArray[col][row - 1][1];
-                    return hasTrashNext ? "TRASH" : "EMPTY";
-                }
-            case "down":
-            case "DOWN":
-                hasTrashNext = gridArray[col][row + 1][1] || "WALL";
-                if (hasTrashNext === true) {
-                    return "TRASH";
-                } else if (hasTrashNext === false) {
-                    return "EMPTY";
-                } else {
-                    return "WALL";
-                }
-
-            case "left":
-            case "LEFT":
-                if (col - 1 < 0) {
-                    return "WALL";
-                } else {
-                    hasTrashNext = gridArray[col - 1][row][1];
-                    return hasTrashNext ? "TRASH" : "EMPTY";
-                }
-            case "right":
-            case "RIGHT":
-                if (gridArray[col + 1] === undefined) {
-                    return "WALL";
-                } else {
-                    hasTrashNext = gridArray[col + 1][row][1];
-                    return hasTrashNext ? "TRASH" : "EMPTY";
-                }
-
-            default:
-                return "Wrong direction";
-        }
-    }
 
     function updateRobotPos(newPos, oldPos, hasTrash) {
         // console.log('oldbox',gridArray[oldPos[0]][oldPos[1]])
         if (newPos === "wall") {
-            console.log("hit a wall");
             return false;
         }
 
@@ -163,123 +119,18 @@ export default function Robot({
         return true;
     }
 
-    //script
-
-    function handleScript(event) {
-        setScript(event.target.value);
-    }
-
-    //Block by identention and semicolen
-    // Directions <DIR>: UP, DOWN, LEFT, RIGHT
-    // Action: GO <DIR>
-    // Elements <ELE>: WALL, EMPTY, TRASH
-    // Logical operator <LO>: OR, AND, NOT, IS
-    // Condicionals: IF, ELSE
-    //
-    // Exemple:
-    // IF (<DIR> <LO> <ELE>):
-    //  GO <DIR>
-    // ELSE:
-    // GO <DIR>
-    //
-    // Action GO <DIR> execute script
-
-    function parseScript(script) {
-        // console.log(script)
-        let executionLines = script.split(/[\r\n]+/g); //by line break; 
-        return executionLines;
-    }
-
-    function runScript(event) {
-        // return key
-        let wallHits = 0;
-        let scriptParsed = parseScript(script);
-
-        // regex
-        let regexIf = /if\s(up|down|left|right)\s(empty|trash|wall|):\n(up|down|left|right)/i;
-        console.log("execution script", scriptParsed);
-        // exec loop
-
-        const execution = function() {
-            const executionStack = [];
-            for (let line of scriptParsed) {
-                let match = regexDir.exec(line)[1];
-                let checkedPos = checkPos(match);
-                console.log("Going", match, "It is:", checkedPos);
-                executionStack.push(match);
-                const validMove = inputHandle(match);
-                // check for wall hits
-                console.log("validMove?", validMove);
-                if (!validMove) {
-                    wallHits++;
-                    // if hit wall n times in a row stop
-                }
-            }
-            if (wallHits < 3) {
-                // setTimeout(() => execution(), 1000)
-            }
-            return true;
-        };
-
-        execution();
-    }
-
+            const gridState = checkRobotState(gridArray, robotPos)
     return (
-        <div className="robot-input" id="{id}">
-            <div id="controller">
-                <div>
-                    <button
-                        style={{ marginLeft: "38px" }}
-                        id="up"
-                        onClick={e => inputHandle("up")}
-                    >
-                        {" "}
-                        ^{" "}
-                    </button>
-                </div>
-
-                <div>
-                    <button
-                        style={{ marginLeft: "15px" }}
-                        id="left"
-                        onClick={e => inputHandle("left")}
-                    >
-                        {" "}
-                        {"<"}{" "}
-                    </button>
-                    <button
-                        style={{ marginLeft: "20px" }}
-                        id="right"
-                        onClick={e => inputHandle("right")}
-                    >
-                        {" "}
-                        {">"}{" "}
-                    </button>
-                </div>
-
-                <div>
-                    <button
-                        style={{ marginLeft: "38px" }}
-                        id="donw"
-                        onClick={e => inputHandle("down")}
-                    >
-                        {" "}
-                        v{" "}
-                    </button>
-                </div>
-            </div>
-
+        <div style={{display:'flex'}}>
+            {/* <Arrows></Arrows> */}
+            <SwitchMode setDevMode={setDevMode} devMode={devMode} />
             <div className="robot-information">
                 <div className="trashColleted">
                     Trash Collected: {trashColleted}
                 </div>
                 <div className="moves">Moves: {moves}</div>
             </div>
-
-            <div id="script">
-                <textarea value={script} onChange={handleScript} />
-                <button onClick={runScript}>RUN</button>
-            </div>
+            <RobotStateDisplay gridState={gridState} />
         </div>
     );
 }
