@@ -6,7 +6,7 @@ import GridArray from "./grid_array";
 
 export default function Grid() {
     //generate Grid
-    const [chanceOfTrash, setChangeOfTrash] = useState(20);
+    const [chanceOfTrash, setChangeOfTrash] = useState(30);
     const [gridSize, setGridSize] = useState(5);
     const [numberOfRuns, setNumberOfRuns] = useState(0);
     let [initgrid, initrobot] = generateGridArray(gridSize, chanceOfTrash);

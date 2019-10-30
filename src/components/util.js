@@ -21,9 +21,7 @@ export function generateGridArray(size, chanceOfTrash) {
             const pos = [x, y];
             const hasTrash =
                 Math.random() * 100 < chanceOfTrash
-                    ? checkPos(x, y)
-                        ? false
-                        : true
+                    ? true
                     : false;
             const hasRobot = checkPos(x, y);
             boxs.push([pos, hasTrash, hasRobot]);
