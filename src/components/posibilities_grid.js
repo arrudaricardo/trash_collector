@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Box from "./box";
+import Pbutton from './posibilities_button'
 // TODO: display trash with robot in current location; render all posibilities
 export default () => {
     const [state, setState] = useState({
@@ -84,7 +85,7 @@ export default () => {
                     </div>
                 </div>
             </div>
-            <input />
+            <Pbutton state={ state} />
         </div>
     );
 };
