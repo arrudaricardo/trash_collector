@@ -2,19 +2,19 @@ import React from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
-export default ({devMode, setDevMode}) => (
+export default ({mode, setMode}) => (
 <div>
      <FormControlLabel
-     style={{marginTop:'1em'}}
+     style={{marginrop:'1em', marginRight: '5em', maxWidth: '2em'}}
         control={
           <Switch
-            checked={devMode}
-            onClick={(e) => setDevMode(!devMode)}
-            value={devMode}
+            checked={mode === 'dev'}
+            onClick={(e) => setMode(mode === 'dev'? 'nomal': 'dev')}
+            value={mode}
             color="primary"
           />
         }
-        label="DevMode"
+        label={mode}
       />
  </div>
 )

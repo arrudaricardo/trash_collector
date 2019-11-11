@@ -1,3 +1,11 @@
+export const stateValues = {
+    left :{trash: 2, empty: 3, wall: 5},
+    right :{trash: 7, empty: 11, wall: 13},
+    up :{trash: 17, empty: 19, wall: 23},
+    down :{trash: 29, empty: 31, wall: 37},
+    current :{trash: 41, empty: 43}
+}
+
 export function generateGridArray(size, chanceOfTrash) {
     // grid[
     //  [[pos,hastrash,hasRobot],[],[]],
@@ -31,8 +39,10 @@ export function generateGridArray(size, chanceOfTrash) {
     return [grid, robotPos];
 }
 
+
 export function checkRobotState(gridArray, robotPos) {
     const robotState = {};
+    let stateSum = 1;
     const checkPos = direction => {
         let hasTrashNext;
         let [col, row] = robotPos;
@@ -40,39 +50,39 @@ export function checkRobotState(gridArray, robotPos) {
         switch (direction) {
             case "up":
                 if (row - 1 < 0) {
-                    return "WALL";
+                    return "wall";
                 } else {
                     hasTrashNext = gridArray[col][row - 1][1];
-                    return hasTrashNext ? "TRASH" : "EMPTY";
+                    return hasTrashNext ? "trash" : "empty";
                 }
             case "down":
-                let position = gridArray[col][row + 1] || "WALL";
+                let position = gridArray[col][row + 1] || "wall";
                 if (position[1] === true) {
-                    return "TRASH";
+                    return "trash";
                 } else if (position[1] === false) {
-                    return "EMPTY";
+                    return "empty";
                 } else {
-                    return "WALL";
+                    return "wall";
                 }
 
             case "left":
                 if (col - 1 < 0) {
-                    return "WALL";
+                    return "wall";
                 } else {
                     hasTrashNext = gridArray[col - 1][row][1];
-                    return hasTrashNext ? "TRASH" : "EMPTY";
+                    return hasTrashNext ? "trash" : "empty";
                 }
             case "right":
                 if (gridArray[col + 1] === undefined) {
-                    return "WALL";
+                    return "wall";
                 } else {
                     hasTrashNext = gridArray[col + 1][row][1];
-                    return hasTrashNext ? "TRASH" : "EMPTY";
+                    return hasTrashNext ? "trash" : "empty";
                 }
 
             case "current":
                 let hasTrash = gridArray[col][row][1];
-                return hasTrash ? "TRASH" : "EMPTY";
+                return hasTrash ? "trash" : "empty";
 
             default:
                 return "Wrong direction";
@@ -81,7 +91,10 @@ export function checkRobotState(gridArray, robotPos) {
 
     ["up", "down", "left", "right", "current"].forEach(dir => {
         robotState[dir] = checkPos(dir);
+        stateSum *= stateValues[dir][checkPos(dir)]
     });
 
-    return robotState;
+    return {robotState, stateSum}
 }
+
+
