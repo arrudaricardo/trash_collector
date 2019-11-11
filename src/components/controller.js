@@ -1,6 +1,7 @@
 import React,{useContext} from 'react';
 import Button from '@material-ui/core/Button';
 import { Pcontext } from "./game";
+import Tooltip from '@material-ui/core/Tooltip';
 
 export default () => {
 
@@ -20,6 +21,7 @@ export default () => {
 
 return (
     <div className="grid-input">
+        <Tooltip title={`size: ${state.grid.gridSize}x${state.grid.gridSize}`}placement="top">
         <div className="grid-size-input">
             Grid Size:
             <input
@@ -29,6 +31,9 @@ return (
                 value={state.grid.gridSize}
             />
         </div>
+        </Tooltip>
+
+        <Tooltip title="chance per slot"placement="top">
         <div className="grid-change-input">
             Trash:
             <input
@@ -41,11 +46,14 @@ return (
             />
             %
         </div>
+        </Tooltip>
         <div>
+        <Tooltip title="reset grid"placement="top">
             <Button variant="contained"  color="primary" onClick={handleRestart}>
                 {" "}
                 Reset{" "}
             </Button>
+        </Tooltip>
         </div>
     </div>
 );

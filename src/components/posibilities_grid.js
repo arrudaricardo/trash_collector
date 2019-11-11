@@ -3,11 +3,52 @@ import Box from "./box";
 import Pbutton from "./posibilities_button";
 import { Pcontext } from "./game";
 import { stateValues } from "./util";
-import Pstate from "./pstate";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
+import { makeStyles } from "@material-ui/core/styles";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import DialogSelect from "./nameDialog";
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import Tooltip from '@material-ui/core/Tooltip';
 
 
-const Pgrid  = () => {
-    const { state } = useContext(Pcontext);
+const useStyles = makeStyles(theme => ({
+    delete: {
+        margin: theme.spacing(1)
+    },
+    input: {
+        display: "none"
+    },
+    textField: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        width: 80
+    },
+    container: {
+        display: "flex",
+        justifyContent: "flex-end"
+    },
+    fab: {
+        margin: theme.spacing(1)
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120
+    },
+    selectEmpty: {
+        marginTop: theme.spacing(2)
+    },
+ arrow: {
+    margin: theme.spacing(1),
+  },
+}));
+
+const Pgrid = () => {
+    const classes = useStyles();
+    const { state, dispatch } = useContext(Pcontext);
 
     const [action, setAction] = useState("");
     const [stateSum, setStateSum] = useState(835791);
@@ -20,7 +61,6 @@ const Pgrid  = () => {
         current: "empty"
     });
 
-    
     const getStateSum = () => {
         let stateSum = 1;
         Object.keys(gridState).forEach(dir => {
@@ -29,14 +69,35 @@ const Pgrid  = () => {
         return stateSum;
     };
 
+    const resetPosibilities = event => {
+        event.preventDefault();
+            dispatch({
+                type: "resetPosibilities",
+                payload: state.grid.gameName
+            }); 
+        setState({
+            up: "empty",
+            down: "empty",
+            left: "empty",
+            right: "empty",
+            current: "empty"
+        });
+    };
+
+    const deleteGameName = event => {
+        event.preventDefault();
+            dispatch({
+                type: "deleteGameName",
+                payload: state.grid.gameName
+            });
+    }
 
     // update action for the state sum
-    // update grid sum 
+    // update grid sum
     useEffect(() => {
         setStateSum(getStateSum());
         setAction(state.moves[state.grid.gameName][stateSum]);
-    },[Object.keys(gridState)] );
-
+    },[Object.keys(gridState)]);
 
     function toggleState(event, position, isRobot = false) {
         event.preventDefault();
@@ -54,8 +115,45 @@ const Pgrid  = () => {
         return newState;
     }
 
+    const handleNameSelect = e => {
+        dispatch({type:'changeGameName', payload: e.target.value})
+    };
+
     return (
         <div>
+            <div className={classes.container} noValidate autoComplete="off">
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="label">Name</InputLabel>
+                    <Select
+                        id="select-name"
+                        value={state.grid.gameName}
+                        onChange={handleNameSelect}
+                    >
+                        {Object.keys(state.moves).map(name => (
+                            <MenuItem value={name}>{name}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                <Tooltip title="Delete">
+                <IconButton
+                    disabled={state.grid.gameName === 'default'}
+                    onClick={deleteGameName}
+                    className={classes.delete}
+                    aria-label="delete"
+                >
+                    <DeleteIcon />
+                </IconButton>
+                </Tooltip>
+
+                <Tooltip title="Reset">
+                    <IconButton onClick={resetPosibilities} aria-label="delete" className={classes.arrow} size="small">
+                        <ArrowDownwardIcon fontSize="inherit" />
+                    </IconButton>
+                </Tooltip>
+
+                <DialogSelect/>
+
+            </div>
             <div style={{ display: "flex" }}>
                 <div id="left">
                     <Box visible={false} hasTrash={false} />

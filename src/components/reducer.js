@@ -1,23 +1,32 @@
 import { generateGridArray } from "./util";
 
 export default function reducer(state, action) {
-    let [gridArray, robotPos] = [null, null];
     Object.freeze(state);
     const oldState = Object.assign({}, state);
     function resetGridArray(oldState) {
-          const [gridArray, robotPos] = generateGridArray(
-                oldState.grid.gridSize,
-                oldState.grid.chanceOfTrash
-            );
-            oldState.grid.gridArray = gridArray;
-            oldState.grid.robotPos = robotPos;
-            return oldState
+        const [gridArray, robotPos] = generateGridArray(
+            oldState.grid.gridSize,
+            oldState.grid.chanceOfTrash
+        );
+        oldState.grid.gridArray = gridArray;
+        oldState.grid.robotPos = robotPos;
+        //reset run variables
+        oldState.grid.runs = 1;
+        oldState.grid.gameOver = false;
+        oldState.grid.moves = 0;
+        oldState.grid.trashColleted = 0;
+
+        return oldState;
     }
     switch (action.type) {
         case "addPosibilities":
             let name = action.name;
             let value = action.value;
             oldState.moves[name] = { ...oldState.moves[name], ...value };
+            return oldState;
+
+        case "resetPosibilities":
+            oldState.moves[action.payload] = {}
             return oldState;
 
         case "addResult":
@@ -30,15 +39,14 @@ export default function reducer(state, action) {
         case "setGridSize":
             oldState.grid.gridSize = action.payload;
 
-            return resetGridArray(oldState)
+            return resetGridArray(oldState);
 
         case "setChangeOfTrash":
             oldState.grid.chanceOfTrash = action.payload;
-            return resetGridArray(oldState)
-
+            return resetGridArray(oldState);
 
         case "resetGridArray":
-            return resetGridArray(oldState)
+            return resetGridArray(oldState);
 
         case "setGameOver":
             oldState.grid.gameOver = action.payload;
@@ -60,6 +68,22 @@ export default function reducer(state, action) {
             oldState.grid.robotPos = action.payload;
             return oldState;
 
+        case "addGameName":
+            oldState.grid.gameName = action.payload;
+            oldState.moves[action.payload] = {}
+            return oldState;
+
+        case "changeGameName":
+            oldState.grid.gameName = action.payload;
+            return oldState;
+
+        case "deleteGameName":
+            if (action.payload !== 'default'){
+                delete oldState.moves[action.payload]
+            }
+            oldState.grid.gameName = 'default'
+            return oldState;
+
         default:
             throw Error("Specify Action");
     }
@@ -77,7 +101,7 @@ export default function reducer(state, action) {
 //         runs: 0,
 //         gameOver: false,
 //         moves: 0,
-//         trashColleted:0
+//         trashColleted: 0
 
 //     }
 // }

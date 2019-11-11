@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Grid from "@material-ui/core/Grid";
 import { Pcontext } from "./game";
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles(theme => ({
     grid: {display: 'flex'},
@@ -79,6 +80,7 @@ export default function PButton({gridState, action ,stateSum}) {
                     >
                         Right
                     </Button>
+                    <Tooltip title='Move to random direction'>
                     <Button
                         variant="contained"
                         color={action === 'random'? "primary": ""}
@@ -87,6 +89,7 @@ export default function PButton({gridState, action ,stateSum}) {
                     >
                         Random
                     </Button>
+                    </Tooltip>
         </ButtonGroup>
         </Grid>               
       </Grid>

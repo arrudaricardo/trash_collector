@@ -3,9 +3,10 @@ import SwitchMode from "./switch_mode";
 import { checkRobotState } from "./util";
 import RobotStateDisplay from "./robot_state_display";
 import Button from "@material-ui/core/Button";
-import TextField from '@material-ui/core/TextField';
+import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { Pcontext } from "./game";
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles(theme => ({
     button: {
@@ -14,17 +15,19 @@ const useStyles = makeStyles(theme => ({
     textField: {
         marginLeft: theme.spacing(0),
         marginRight: theme.spacing(1),
-        width: 40,
-    },
+        width: 40
+    }
 }));
 
 export default function Robot() {
     const classes = useStyles();
-    const {state, dispatch} = useContext(Pcontext)
+    const { state, dispatch } = useContext(Pcontext);
     const [running, setRunning] = useState(false);
-    const [mode, setMode] = useState('normal'); //dev or normal
-    const [gridState, setGridState] = useState(checkRobotState(state.grid.gridArray, state.grid.robotPos));
-    const [runTimes, setRunTimes] = useState(1)
+    const [mode, setMode] = useState("normal"); //dev or normal
+    const [gridState, setGridState] = useState(
+        checkRobotState(state.grid.gridArray, state.grid.robotPos)
+    );
+    const [runTimes, setRunTimes] = useState(1);
 
     // restart grid
     // useEffect(() => {
@@ -34,38 +37,45 @@ export default function Robot() {
     // }, [gridArray]);
 
     //update current gridState
-    useEffect( () => {
-        setGridState(checkRobotState(state.grid.gridArray, state.grid.robotPos))
-    }, [state.grid.gridArray, state.grid.robotPos, state.grid.moves])
-
-
+    useEffect(() => {
+        setGridState(
+            checkRobotState(state.grid.gridArray, state.grid.robotPos)
+        );
+    }, [state.grid.gridArray, state.grid.robotPos, state.grid.moves]);
 
     function inputHandle(move) {
         let nextPos;
         let [col, row] = state.grid.robotPos;
 
-        if (move === 'random') {
+        if (move === "default") {
             // always get the trash if in current pos by default
-            if (state.grid.gridArray[col][row][1]){
-                move = 'getTrash'
-            } else  {
-            // always move to a grid with trash
-            // let robotState = checkRobotState(gridArray, robotPos).robotState
-            // let moves = Object.keys(robotState).filter( e =>  robotState[e] === 'trash')
-            
-            let moves = Object.keys(gridState.robotState).filter( e =>  gridState.robotState[e] === 'trash')
+            if (state.grid.gridArray[col][row][1]) {
+                move = "getTrash";
+            } else {
+                // always move to a grid with trash
+                // let robotState = checkRobotState(gridArray, robotPos).robotState
+                // let moves = Object.keys(robotState).filter( e =>  robotState[e] === 'trash')
 
-                    // if has trash in vision
-                if (moves.length > 0){
-                    move = moves[Math.floor(Math.random() * moves.length)]
+                let moves = Object.keys(gridState.robotState).filter(
+                    e => gridState.robotState[e] === "trash"
+                );
 
-                }else {
+                // if has trash in vision
+                if (moves.length > 0) {
+                    move = moves[Math.floor(Math.random() * moves.length)];
+                } else {
                     //check place with not wall
-                    let moves = Object.keys(gridState.robotState).filter( e =>  gridState.robotState[e] !== 'wall' && e !== 'current' )
-                    move = moves[Math.floor(Math.random() * moves.length)]
-                    
+                    let moves = Object.keys(gridState.robotState).filter(
+                        e =>
+                            gridState.robotState[e] !== "wall" &&
+                            e !== "current"
+                    );
+                    move = moves[Math.floor(Math.random() * moves.length)];
                 }
             }
+        } else if (move === "random") {
+            let moves = ["up", "down", "left", "right"];
+            move = moves[Math.floor(Math.random() * moves.length)];
         }
 
         switch (move) {
@@ -80,7 +90,7 @@ export default function Robot() {
 
             case "down":
                 nextPos = state.grid.gridArray[col][row + 1][0] || "wall";
-                return updateRobotPos(nextPos, state.grid.robotPos );
+                return updateRobotPos(nextPos, state.grid.robotPos);
 
             case "left":
                 // if col is < 0, next position is 'wall'
@@ -89,7 +99,7 @@ export default function Robot() {
                 } else {
                     nextPos = state.grid.gridArray[col - 1][row][0];
                 }
-                return updateRobotPos(nextPos, state.grid.robotPos );
+                return updateRobotPos(nextPos, state.grid.robotPos);
 
             case "right":
                 if (state.grid.gridArray[col + 1] === undefined) {
@@ -97,27 +107,28 @@ export default function Robot() {
                 } else {
                     nextPos = state.grid.gridArray[col + 1][row][0];
                 }
-                return updateRobotPos(nextPos, state.grid.robotPos );
-                
-            case 'getTrash':
+                return updateRobotPos(nextPos, state.grid.robotPos);
+
+            case "getTrash":
                 // current position
                 let currPos = state.grid.gridArray[col][row][0];
-                let hasTrash = state.grid.gridArray[col][row][1]
-                if (hasTrash) return updateRobotPos(currPos, state.grid.robotPos, true);
+                let hasTrash = state.grid.gridArray[col][row][1];
+                if (hasTrash)
+                    return updateRobotPos(currPos, state.grid.robotPos, true);
                 break;
 
             default:
-                throw Error("Please specify movment")
+                throw Error("Please specify movment");
         }
     }
 
     const arrowKeyListener = () => {
         document.onkeydown = function(e) {
-            if (mode !== 'dev') return;
+            if (mode !== "dev") return;
             e.preventDefault();
             switch (e.keyCode) {
-                case 32: 
-                    inputHandle('getTrash')
+                case 32:
+                    inputHandle("getTrash");
                     break;
                 case 37:
                     inputHandle("left");
@@ -138,8 +149,7 @@ export default function Robot() {
     };
     arrowKeyListener();
 
-    function updateRobotPos(newPos, oldPos,  getTrash = false) {
-
+    function updateRobotPos(newPos, oldPos, getTrash = false) {
         if (newPos === "wall") {
             return false;
         }
@@ -152,28 +162,29 @@ export default function Robot() {
                 // remove trash from grid from grid
                 prevGridArray[oldPos[0]][oldPos[1]][1] = false;
 
-                dispatch({type:'setRobotPos', payload: newPos})
+                dispatch({ type: "setRobotPos", payload: newPos });
 
                 // add to counter
-                dispatch({type:'setTrashCollected', payload: state.grid.trashColleted + 1})
+                dispatch({
+                    type: "setTrashCollected",
+                    payload: state.grid.trashColleted + 1
+                });
             } else {
-            // remove robot position of GridArray
-            prevGridArray[oldPos[0]][oldPos[1]][2] = false;
-            // add robot new position into array
-            prevGridArray[newPos[0]][newPos[1]][2] = true;
+                // remove robot position of GridArray
+                prevGridArray[oldPos[0]][oldPos[1]][2] = false;
+                // add robot new position into array
+                prevGridArray[newPos[0]][newPos[1]][2] = true;
 
-            dispatch({type:'setRobotPos', payload: newPos})
+                dispatch({ type: "setRobotPos", payload: newPos });
             }
-
-
 
             // dispatch({type:'setGridArray', payload: newPos})
             // setGridArray(gridArray) // update grid
 
-             dispatch({type:'setMoves', payload: state.grid.moves + 1})
+            dispatch({ type: "setMoves", payload: state.grid.moves + 1 });
             return prevGridArray;
         };
-        dispatch({type:"setGridArray", payload: nextGridArray()})
+        dispatch({ type: "setGridArray", payload: nextGridArray() });
 
         return true;
     }
@@ -183,106 +194,119 @@ export default function Robot() {
     function getNextMove() {
         // let gridState = checkRobotState(gridArray, robotPos);
         // check if state is set on posibilities state by the user
-        let nextMove = state.moves[state.grid.gameName][gridState.stateSum]
+        let nextMove = state.moves[state.grid.gameName][gridState.stateSum];
 
         if (nextMove) {
-            return nextMove
+            return nextMove;
         } else {
-            return 'random'
+            return "default";
         }
-
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         checkGameOver();
-        if (running  && !state.grid.gameOver){
-            inputHandle(getNextMove())
+        if (running && !state.grid.gameOver) {
+            inputHandle(getNextMove());
+        } else if (runTimes > 1) {
+            setRunning(prev => !prev);
+        } else if (runTimes === -1) {
         }
-
-    }, [running, gridState])
-
+    }, [running, gridState]);
 
     useEffect(() => {
-       if (runTimes > 1 && state.grid.gameOver) {
-
-        dispatch({type:"setGameOver", payload: false})
-        setRunning(true)
-       }
-
-    }, [state.grid.gameOver])
-
+        if (runTimes > 1 && state.grid.gameOver) {
+            dispatch({ type: "setGameOver", payload: false });
+            setRunning(true);
+        }
+    }, [state.grid.gameOver]);
 
     function checkGameOver() {
-        let isOver = !state.grid.gridArray.some( arr => arr.some(e => e[1] === true))
+        let isOver = !state.grid.gridArray.some(arr =>
+            arr.some(e => e[1] === true)
+        );
         if (isOver && !state.grid.gameOver) {
-            let score = ( ((state.grid.moves / state.grid.trashColleted) ) * 100 ).toFixed(1) // 100 is perfect score
-            let newResult = {gameName: state.grid.gameName, score, moves: state.grid.moves , trashsCollected: state.grid.trashColleted, gridSize: state.grid.gridSize, fail:false}
+            let score = (state.grid.moves / state.grid.trashColleted).toFixed(
+                1
+            ); // 100 is perfect score
+            let newResult = {
+                gameName: state.grid.gameName,
+                score,
+                moves: state.grid.moves,
+                trashsCollected: state.grid.trashColleted,
+                gridSize: state.grid.gridSize,
+                fail: false
+            };
 
-
-             dispatch({type:'setGameOver', payload: true})
-            setRunning(false)
+            dispatch({ type: "setGameOver", payload: true });
+            setRunning(false);
             // add to results
-            dispatch({type: 'addResult', result: newResult})
+            dispatch({ type: "addResult", result: newResult });
 
-            setRunTimes( prev => prev -1)
-             dispatch({type:'resetGridArray'})
+            setRunTimes(prev => prev - 1);
+            dispatch({ type: "resetGridArray" });
         }
 
         // if running to much times
-        if (state.grid.moves > state.grid.gridSize ** 4){
+        if (state.grid.moves > state.grid.gridSize ** 4) {
             //TODO: game fail
 
-        let score = ( ((state.grid.moves / state.grid.trashColleted) ) * 100 ).toFixed(1) // 100 is perfect score
-        let newResult = {gameName: state.grid.gameName, score, moves: state.grid.moves , trashsCollected: state.grid.trashColleted, gridSize: state.grid.gridSize, fail: true}
-        dispatch({type:'setGameOver', payload: true})
-        setRunning(false)
-        dispatch({type: 'addResult', result: newResult})
-        setRunTimes( prev => prev -1)
-        dispatch({type:'resetGridArray'})
-
+            let score = (state.grid.moves / state.grid.trashColleted).toFixed(
+                1
+            ); // 100 is perfect score
+            let newResult = {
+                gameName: state.grid.gameName,
+                score,
+                moves: state.grid.moves,
+                trashsCollected: state.grid.trashColleted,
+                gridSize: state.grid.gridSize,
+                fail: true
+            };
+            dispatch({ type: "setGameOver", payload: true });
+            setRunning(false);
+            dispatch({ type: "addResult", result: newResult });
+            setRunTimes(prev => prev - 1);
+            dispatch({ type: "resetGridArray" });
         }
     }
 
-    
     function handleRun(e) {
         e.preventDefault();
         // toggle running state
-        setRunning((prev) => !prev)
-        
+        setRunning(prev => !prev);
     }
-
 
     return (
         <div style={{ display: "flex" }}>
             <div>
+                <Tooltip enterDelay={500} title="Start Game">
+                    <Button
+                        disabled={runTimes == 0}
+                        onClick={handleRun}
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                    >
+                        {running ? "STOP" : "RUN"}
+                    </Button>
+                </Tooltip>
 
-            <Button
-                disabled={runTimes == 0}
-                onClick={handleRun}
-                variant="contained"
-                color="primary"
-                className={classes.button}
-            >
-                {running ? "STOP": "RUN"}
-            </Button>
+                <TextField
+                    value={runTimes}
+                    onChange={e => setRunTimes(e.target.value)}
+                    min="-1"
+                    step="1"
+                    id="runTimes"
+                    label="Times"
+                    type="number"
+                    className={classes.textField}
+                    InputLabelProps={{
+                        shrink: true
+                    }}
+                    margin="normal"
+                />
 
-             <TextField
-            value={runTimes}
-            onChange={e => setRunTimes(e.target.value)}
-            min="-1"
-            step="1"
-            id="runTimes"
-            label="Times"
-            type="number"
-            className={classes.textField}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          margin="normal"
-            />
-
-            <SwitchMode setMode={setMode} mode={mode} />
-            <div>StateId: {gridState.stateSum} </div>
+                <SwitchMode setMode={setMode} mode={mode} />
+                <div>StateId: {gridState.stateSum} </div>
             </div>
             <div className="robot-information">
                 <div className="trashColleted">
@@ -290,7 +314,7 @@ export default function Robot() {
                 </div>
                 <div className="moves">Moves: {state.grid.moves}</div>
             </div>
-             <RobotStateDisplay gridState={gridState.robotState} />
+            <RobotStateDisplay gridState={gridState.robotState} />
         </div>
     );
 }

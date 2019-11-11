@@ -8,6 +8,7 @@ export default () => {
      let grid = state.grid.gridArray.map((row, idx) => {
         const rows = row.map((e, idx2) => {
             return (
+
                 <Box
                     key={Number(`${idx}${idx2}`)}
                     id={e[0]}
