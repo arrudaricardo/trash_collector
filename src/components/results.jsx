@@ -20,7 +20,7 @@ const useStyles = makeStyles({
 
 
 export default function Results() {
-  const {state, dispatch} = useContext(Pcontext)
+  const {state} = useContext(Pcontext)
 
   const classes = useStyles();
 
@@ -31,9 +31,9 @@ export default function Results() {
           <TableRow>
             <TableCell> Run Name </TableCell>
             <TableCell align="right">Score</TableCell>
-            <TableCell align="right">Moves</TableCell>
-            <TableCell align="right">Trashs</TableCell>
-            <TableCell align="right">GridSize</TableCell>
+            <TableCell align="right">Robot Moves</TableCell>
+            <TableCell align="right">Trash Collected</TableCell>
+            <TableCell align="right">Grid Size</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -42,9 +42,9 @@ export default function Results() {
               <TableCell component="th" scope="row">
                 {row.gameName}
               </TableCell>
-              <TableCell align="right">{row.score}</TableCell>
+              <TableCell align="right">{row.fail ? "fail": row.score}</TableCell>
               <TableCell align="right">{row.moves}</TableCell>
-              <TableCell align="right">{row.trashs}</TableCell>
+              <TableCell align="right">{row.trashsCollected}</TableCell>
               <TableCell align="right">{row.gridSize}</TableCell>
             </TableRow>
           ))}

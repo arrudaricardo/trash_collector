@@ -34,7 +34,7 @@ const Pgrid  = () => {
     // update grid sum 
     useEffect(() => {
         setStateSum(getStateSum());
-        setAction(state.moves.default[stateSum]);
+        setAction(state.moves[state.grid.gameName][stateSum]);
     },[Object.keys(gridState)] );
 
 

@@ -21,7 +21,7 @@ export default function PButton({gridState, action ,stateSum}) {
 
     function addPosibilities (newAction){
         let newPayloadState = {[stateSum]: newAction }
-        dispatch({type:'addPosibilities', name: state.gameName, value: newPayloadState })
+        dispatch({type:'addPosibilities', name: state.grid.gameName, value: newPayloadState })
     }
 
     return (
