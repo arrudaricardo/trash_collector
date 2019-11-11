@@ -12,37 +12,43 @@ export default function Grid() {
     let [initgrid, initrobot] = generateGridArray(gridSize, chanceOfTrash);
     const [robotPos, setRobotPos] = useState(initrobot);
     const [gridArray, setGridArray] = useState(initgrid);
-    const [results, setResults] = useState([])
     const [gameOver, setGameOver] = useState(false)
     const [moves, setMoves] = useState(0);
     const [trashColleted, setTrashCollected] = useState(0);
 
 
     useEffect(() => {
+        resetGridArray();
+    }, [gridSize, gridSize, chanceOfTrash]);
+
+
+    function resetGridArray () {
         [initgrid, initrobot] = generateGridArray(gridSize, chanceOfTrash);
         setRobotPos(initrobot);
         setGridArray(initgrid);
-    }, [gridSize, gridSize, chanceOfTrash]);
+    }
 
 
 
     return (
         <>
             <Controller
+                resetGridArray={resetGridArray}
                 setGridSize={setGridSize}
                 setChangeOfTrash={setChangeOfTrash}
                 setNumberOfRuns={setNumberOfRuns}
                 gridSize={gridSize}
                 chanceOfTrash={chanceOfTrash}
+                gameOver={gameOver}
             />
             <GridArray robotPos={robotPos} gridArray={gridArray} />
             <Robot
+                resetGridArray={resetGridArray}
                 robotPos={robotPos}
                 gridArray={gridArray}
                 setRobotPos={setRobotPos}
                 setGridArray={setGridArray}
                 gameOver={gameOver}
-                setResults={setResults}
                 setGameOver={setGameOver}
                 moves={moves}
                 setMoves={setMoves}

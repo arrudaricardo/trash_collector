@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import { Link } from "react-router-dom";
+import { NavLink} from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,13 +21,19 @@ export default () => {
     <div className={classes.root}>
       <Paper elevation={0} className={classes.paper}>
         <Breadcrumbs aria-label="breadcrumb">
-          <Link to='/'>
+          <NavLink to='/'>
            Game 
-          </Link>
+          </NavLink>
 
-          <Link to='/state'>
+          <NavLink to='/state'>
            Posibilities 
-          </Link>
+          </NavLink>
+
+          <NavLink to='/results'>
+           Results 
+          </NavLink>
+
+          
         </Breadcrumbs>
       </Paper>
       <br />

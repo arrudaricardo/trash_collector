@@ -9,7 +9,6 @@ export default ({gridArray}) => {
                 <Box
                     key={Number(`${idx}${idx2}`)}
                     id={e[0]}
-                    // hasRobot={e[0][0] === robotPos[0] &&  e[0][1] == robotPos[1]}
                     hasRobot={e[2]}
                     hasTrash={e[1]}
                 />

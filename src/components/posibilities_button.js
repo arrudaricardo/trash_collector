@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
@@ -12,13 +12,16 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function PButton({ state, action ,stateSum}) {
-    const {dispatch} = useContext(Pcontext);
+
+// default name for possibilities
+
+export default function PButton({gridState, action ,stateSum}) {
+    const {state, dispatch} = useContext(Pcontext);
     const classes = useStyles();
 
     function addPosibilities (newAction){
         let newPayloadState = {[stateSum]: newAction }
-        dispatch({type:'addPosibilities', payload: newPayloadState })
+        dispatch({type:'addPosibilities', name: state.gameName, value: newPayloadState })
     }
 
     return (
@@ -29,7 +32,7 @@ export default function PButton({ state, action ,stateSum}) {
                     size="small"
                     aria-label="small outlined button group"
                 >
-                    <Button disabled={!(state.current === 'trash')}
+                    <Button disabled={!(gridState.current === 'trash')}
                         variant="contained"
                         color={action ==='getTrash'?"primary": ""}
                         className={classes.button}
@@ -44,7 +47,7 @@ export default function PButton({ state, action ,stateSum}) {
                     size="small"
                     aria-label="small outlined button group"
                 >
-                    <Button disabled={state.up === 'wall'}
+                    <Button disabled={gridState.up === 'wall'}
                         variant="contained"
                         color={action === 'up'? "primary": ""}
                         className={classes.button}
@@ -52,7 +55,7 @@ export default function PButton({ state, action ,stateSum}) {
                     >
                         Up
                     </Button>
-                    <Button disabled={state.down === 'wall'}
+                    <Button disabled={gridState.down === 'wall'}
                         variant="contained"
                         color={action === 'down'? "primary": ""}
                         className={classes.button}
@@ -60,7 +63,7 @@ export default function PButton({ state, action ,stateSum}) {
                     >
                         Down
                     </Button>
-                    <Button disabled={state.left === 'wall'}
+                    <Button disabled={gridState.left === 'wall'}
                         variant="contained"
                         className={classes.button}
                         color={action === 'left' ? "primary" : ""}
@@ -68,7 +71,7 @@ export default function PButton({ state, action ,stateSum}) {
                     >
                          Left
                     </Button>
-                    <Button disabled={state.right === 'wall'}
+                    <Button disabled={gridState.right === 'wall'}
                         variant="contained"
                         color={action === 'right'? "primary": ""}
                         className={classes.button}

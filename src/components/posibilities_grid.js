@@ -3,15 +3,16 @@ import Box from "./box";
 import Pbutton from "./posibilities_button";
 import { Pcontext } from "./game";
 import { stateValues } from "./util";
-import Pstate from './pstate'
+import Pstate from "./pstate";
 
-export default () => {
-    const { pState } = useContext(Pcontext);
+
+const Pgrid  = () => {
+    const { state } = useContext(Pcontext);
 
     const [action, setAction] = useState("");
     const [stateSum, setStateSum] = useState(835791);
 
-    const [state, setState] = useState({
+    const [gridState, setState] = useState({
         up: "empty",
         down: "empty",
         left: "empty",
@@ -19,32 +20,28 @@ export default () => {
         current: "empty"
     });
 
-
-    // ["up", "down", "left", "right", "current"].forEach(dir => {
-    //     robotState[dir] = checkPos(dir);
-    //     stateSum *= stateValues[dir][checkPos(dir)]
-    // });
+    
     const getStateSum = () => {
         let stateSum = 1;
-        Object.keys(state).forEach(dir => {
-            stateSum *= stateValues[dir][state[dir]];
+        Object.keys(gridState).forEach(dir => {
+            stateSum *= stateValues[dir][gridState[dir]];
         });
         return stateSum;
     };
 
-    useEffect(()=>{
-        setStateSum(getStateSum())
-    },[state])
 
-    useEffect(()=>{
-        setAction(pState[stateSum]);
-    },[stateSum])
+    // update action for the state sum
+    // update grid sum 
+    useEffect(() => {
+        setStateSum(getStateSum());
+        setAction(state.moves.default[stateSum]);
+    },[Object.keys(gridState)] );
 
 
     function toggleState(event, position, isRobot = false) {
         event.preventDefault();
-        let dir = state[position];
-        // return next state
+        let dir = gridState[position];
+        // return next gridState
         let states;
         if (!isRobot) {
             states = ["empty", "wall", "trash"];
@@ -53,7 +50,7 @@ export default () => {
         }
         let idx = states.indexOf(dir);
         let nextDir = states[(idx + 1) % states.length];
-        let newState = { ...state, [position]: nextDir };
+        let newState = { ...gridState, [position]: nextDir };
         return newState;
     }
 
@@ -62,56 +59,68 @@ export default () => {
             <div style={{ display: "flex" }}>
                 <div id="left">
                     <Box visible={false} hasTrash={false} />
-                    <div onClick={e => setState(toggleState(e, 'left'))}>
+                    <div onClick={e => setState(toggleState(e, "left"))}>
                         <Box
-                            visible={state.left === "wall" ? false : true}
-                            hasTrash={state.left === "trash" ? true : false}
+                            visible={gridState.left === "wall" ? false : true}
+                            hasTrash={gridState.left === "trash" ? true : false}
                         />
                     </div>
                 </div>
                 <div>
-                    <div id="up" onClick={e =>setState(toggleState(e, 'up'))}>
+                    <div id="up" onClick={e => setState(toggleState(e, "up"))}>
                         <Box
-                            visible={state.up === "wall" ? false : true}
-                            hasTrash={state.up === "trash" ? true : false}
+                            visible={gridState.up === "wall" ? false : true}
+                            hasTrash={gridState.up === "trash" ? true : false}
                         />
                     </div>
 
                     <div
                         id="current"
-                        onClick={e =>setState(toggleState(e, 'current', true))}
+                        onClick={e => setState(toggleState(e, "current", true))}
                     >
                         <Box
                             hasRobot={true}
-                            hasTrash={state.current === "trash" ? true : false}
+                            hasTrash={
+                                gridState.current === "trash" ? true : false
+                            }
                         />
                     </div>
 
-                    <div id="down" onClick={e =>setState(toggleState(e, 'down' ))}>
+                    <div
+                        id="down"
+                        onClick={e => setState(toggleState(e, "down"))}
+                    >
                         <Box
-                            visible={state.down === "wall" ? false : true}
-                            hasTrash={state.down === "trash" ? true : false}
+                            visible={gridState.down === "wall" ? false : true}
+                            hasTrash={gridState.down === "trash" ? true : false}
                         />
                     </div>
                 </div>
                 <div id="right">
                     <Box visible={false} hasTrash={false} />
 
-                    <div onClick={e =>setState(toggleState(e, 'right' ))}>
+                    <div onClick={e => setState(toggleState(e, "right"))}>
                         <Box
-                            visible={state.right === "wall" ? false : true}
-                            hasTrash={state.right === "trash" ? true : false}
+                            visible={gridState.right === "wall" ? false : true}
+                            hasTrash={
+                                gridState.right === "trash" ? true : false
+                            }
                         />
                     </div>
                 </div>
             </div>
-            <Pbutton state={state} action={action} stateSum={stateSum} />
+            <Pbutton
+                gridState={gridState}
+                action={action}
+                stateSum={stateSum}
+            />
             <div />
 
-    <div style={{padding: "1em", maxHeight: "10px"}}>
-                <Pstate  pState={pState}/>
-    </div>
-
+            <div style={{ padding: "1em", maxHeight: "10px" }}>
+                {/* <Pstate gridState={gridState}/> */}
+            </div>
         </div>
     );
 };
+
+export default Pgrid;

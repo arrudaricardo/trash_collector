@@ -1,7 +1,10 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import Button from '@material-ui/core/Button';
+import { Pcontext } from "./game";
 
-export default ({setGridSize, setChangeOfTrash, setNumberOfRuns, gridSize, chanceOfTrash}) => {
+export default ({setGridSize, setChangeOfTrash, setNumberOfRuns, gridSize, chanceOfTrash, gameOver, resetGridArray}) => {
+
+    const {dispatch} = useContext(Pcontext)
 
     function handleGridChange(event) {
         setGridSize(event.target.value);
@@ -12,7 +15,7 @@ export default ({setGridSize, setChangeOfTrash, setNumberOfRuns, gridSize, chanc
 
     function handleRestart(event) {
         event.preventDefault();
-        setNumberOfRuns((prev) => prev + 1);
+        resetGridArray()
     }
 
 return (
@@ -39,7 +42,7 @@ return (
             %
         </div>
         <div>
-            <Button variant="contained" color="primary" onClick={handleRestart}>
+            <Button variant="contained"  color="primary" onClick={handleRestart}>
                 {" "}
                 Reset{" "}
             </Button>
