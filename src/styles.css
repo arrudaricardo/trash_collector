@@ -3,6 +3,11 @@
   text-align: center;
 }
 
+.container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
 
 .gridContainer{
   display: flex;
@@ -82,6 +87,15 @@
   width: 3em;
 }
 
+
+ a, a:focus, a:active {
+      text-decoration: none;
+      color: inherit;
+ }
+
+a:hover {
+color: rgb(212, 109, 41);
+}
 
 .robot-input {
   display: flex;

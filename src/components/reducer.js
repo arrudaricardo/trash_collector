@@ -84,6 +84,14 @@ export default function reducer(state, action) {
             oldState.grid.gameName = 'default'
             return oldState;
 
+        case "deleteGameNameResult":
+            if (action.payload === 'all') {
+                oldState.results = [] 
+            } else {
+                oldState.results = oldState.results.filter( e => e.gameName != action.payload)
+            }
+        return oldState
+
         default:
             throw Error("Specify Action");
     }

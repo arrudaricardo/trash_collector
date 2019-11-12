@@ -14,22 +14,26 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const selected = {
+color: 'rgb(196, 96, 29',
+}
+
 export default () => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <Paper elevation={0} className={classes.paper}>
-        <Breadcrumbs aria-label="breadcrumb">
-          <NavLink to='/'>
+        <Breadcrumbs  aria-label="breadcrumb">
+          <NavLink  exact activeStyle={selected} to='/'>
            Game 
           </NavLink>
 
-          <NavLink to='/state'>
-           Posibilities 
+          <NavLink activeStyle={selected} to='/state'>
+          Possibilities
           </NavLink>
 
-          <NavLink to='/results'>
+          <NavLink activeStyle={selected} to='/results'>
            Results 
           </NavLink>
 

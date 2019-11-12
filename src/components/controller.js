@@ -2,8 +2,16 @@ import React,{useContext} from 'react';
 import Button from '@material-ui/core/Button';
 import { Pcontext } from "./game";
 import Tooltip from '@material-ui/core/Tooltip';
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(theme => ({
+    button: {
+        marginBottom: '0.5em',
+    },
+}));
 
 export default () => {
+    const classes = useStyles();
 
     const {state, dispatch} = useContext(Pcontext)
 
@@ -49,7 +57,7 @@ return (
         </Tooltip>
         <div>
         <Tooltip title="reset grid"placement="top">
-            <Button variant="contained"  color="primary" onClick={handleRestart}>
+            <Button className={classes.button} variant="contained"  color="primary" onClick={handleRestart}>
                 {" "}
                 Reset{" "}
             </Button>

@@ -123,7 +123,7 @@ const Pgrid = () => {
         <div>
             <div className={classes.container} noValidate autoComplete="off">
                 <FormControl className={classes.formControl}>
-                    <InputLabel id="label">Name</InputLabel>
+                    <InputLabel  id="label">Name</InputLabel>
                     <Select
                         id="select-name"
                         value={state.grid.gameName}
@@ -134,16 +134,16 @@ const Pgrid = () => {
                         ))}
                     </Select>
                 </FormControl>
-                <Tooltip title="Delete">
                 <IconButton
                     disabled={state.grid.gameName === 'default'}
                     onClick={deleteGameName}
                     className={classes.delete}
                     aria-label="delete"
                 >
+                <Tooltip title="Delete">
                     <DeleteIcon />
-                </IconButton>
                 </Tooltip>
+                </IconButton>
 
                 <Tooltip title="Reset">
                     <IconButton onClick={resetPosibilities} aria-label="delete" className={classes.arrow} size="small">

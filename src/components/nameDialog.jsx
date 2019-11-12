@@ -70,6 +70,7 @@ export default function DialogSelect() {
                     <form className={classes.container}>
                         <div>
                             <TextField
+                                autoComplete='off'
                                 id="standard-basic"
                                 className={classes.textField}
                                 label="New Name"

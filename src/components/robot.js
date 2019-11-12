@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import SwitchMode from "./switch_mode";
 import { checkRobotState } from "./util";
 import RobotStateDisplay from "./robot_state_display";
@@ -28,13 +28,6 @@ export default function Robot() {
         checkRobotState(state.grid.gridArray, state.grid.robotPos)
     );
     const [runTimes, setRunTimes] = useState(1);
-
-    // restart grid
-    // useEffect(() => {
-    //     dispatch({type: ''})
-    //     setMoves(0);
-    //     setTrashCollected(0);
-    // }, [gridArray]);
 
     //update current gridState
     useEffect(() => {
@@ -74,7 +67,10 @@ export default function Robot() {
                 }
             }
         } else if (move === "random") {
-            let moves = ["up", "down", "left", "right"];
+            // let moves = ["up", "down", "left", "right"];
+            let moves = Object.keys(gridState.robotState).filter( e => 
+                gridState.robotState[e] !== 'wall' && e !== 'current'
+                );
             move = moves[Math.floor(Math.random() * moves.length)];
         }
 
@@ -225,9 +221,7 @@ export default function Robot() {
             arr.some(e => e[1] === true)
         );
         if (isOver && !state.grid.gameOver) {
-            let score = (state.grid.moves / state.grid.trashColleted).toFixed(
-                1
-            ); // 100 is perfect score
+            let score = Number((state.grid.moves / state.grid.trashColleted).toFixed(3))
             let newResult = {
                 gameName: state.grid.gameName,
                 score,
@@ -276,11 +270,11 @@ export default function Robot() {
     }
 
     return (
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", justifyContent: 'end'}}>
             <div>
                 <Tooltip enterDelay={500} title="Start Game">
                     <Button
-                        disabled={runTimes == 0}
+                        disabled={runTimes === 0}
                         onClick={handleRun}
                         variant="contained"
                         color="primary"
@@ -306,7 +300,9 @@ export default function Robot() {
                 />
 
                 <SwitchMode setMode={setMode} mode={mode} />
+                {mode === 'dev' && 
                 <div>StateId: {gridState.stateSum} </div>
+                } 
             </div>
             <div className="robot-information">
                 <div className="trashColleted">
@@ -314,7 +310,9 @@ export default function Robot() {
                 </div>
                 <div className="moves">Moves: {state.grid.moves}</div>
             </div>
+            {mode === 'dev' &&
             <RobotStateDisplay gridState={gridState.robotState} />
+                }
         </div>
     );
 }
