@@ -168,64 +168,70 @@ export function getStateSum(gridState) {
 }
 
 
-//gen combination wall all possible states
-// up, down, left, right, current
-// return all posibles combinatios with statesum
-export const genCombination = () => {
-    let memo;
+    //gen combination wall all possible states
+    // up, down, left, right, current
+    // return all posibles combinatios with statesum
+    export const genCombination = () => {
+            const posStates = {
+                up: ["trash", "wall", "empty"],
+                down: ["trash", "wall", "empty"],
+                left: ["trash", "wall", "empty"],
+                right: ["trash", "wall", "empty"],
+                current: ["trash", "empty"]
+            };
+            let posArray = Object.values(posStates);
+            let arrStates = combineArrays(posArray);
+            let possiblesStates = [];
 
-    return (function() {
-        if (memo) {return memo}
-        const posStates = {up: ['trash', 'wall', 'empty'], down: ['trash', 'wall', 'empty'], left: ['trash', 'wall', 'empty'], right: ['trash', 'wall', 'empty'], current:['trash', 'empty']}
-        let posArray = Object.values(posStates)
-        let arrStates = combineArrays(posArray)
-        let possiblesStates = []
+            // remove impossible states
+            for (let states of arrStates) {
+                // states: string
 
-        // remove impossible states
-        for (let states of arrStates){
-            // states: string
-            
-            let numWalls = states.split(' ').reduce( (acc, val) => {
-                if (val === 'wall'){
-                    return acc + 1
-                }else {
-                    return acc 
+                let numWalls = states.split(" ").reduce((acc, val) => {
+                    if (val === "wall") {
+                        return acc + 1;
+                    } else {
+                        return acc;
+                    }
+                }, 0);
+
+                // revove state if more than 3 wall and if wall are up down or left right
+                let [up, down, left, right] = states.split(" ");
+                //remove 3 and 4 wall
+                if (numWalls < 3) {
+                    if (
+                        !(
+                            (up === "wall" && down === "wall") ||
+                            (left === "wall" && right === "wall")
+                        )
+                    ) {
+                        let pos = ["up", "down", "left", "right", "current"];
+                        let statesObject = {};
+                        states.split(" ").forEach((el, i) => {
+                            statesObject[pos[i]] = el;
+                        });
+                        let stateSum = getStateSum(statesObject);
+                        statesObject["stateSum"] = stateSum;
+                        possiblesStates.push(statesObject);
+                    }
                 }
-            }, 0)
+            }
+            return possiblesStates;
+    };
 
-            // revove state if more than 3 wall and if wall are up down or left right
-            let [up, down, left, right] = states.split(" ")
-            //remove 3 and 4 wall
-            if (numWalls < 3) {
-                if (!( (up === 'wall' && down === 'wall') || (left === 'wall' && right ==='wall') ) ){
-                let pos = ['up', 'down', 'left', 'right', 'current']
-                    let statesObject = {} 
-                    states.split(" ").forEach( (el, i) => {
-                        statesObject[pos[i]] = el
-
-                    } )
-                    let stateSum = getStateSum(statesObject)
-                    statesObject['stateSum'] = stateSum
-                    possiblesStates.push(statesObject) 
-                    
-                }
+    export function genRobot() {
+        const robot = genCombination()
+        // const robot = [{'a':1}, {'a':1}, {'a':1}]
+        console.log("gen robot");
+        const posMoves = ["up", "down", "left", "right", "getTrash"];
+        for (let i = 0; i < robot.length; i++){
+            robot[i]["action"] = Math.floor(Math.floor(Math.random() * posMoves.length))
+            if ( i < 5 ){
+            console.log(robot[i]['action'])
 
             }
-                
         }
-        memo = possiblesStates;
-        return(possiblesStates)
-        
-})()
-} ;
-
-function genRobot(){
-    const robot = [...genCombination()]
-    const posMoves = ['up','down','left','right','getTrash']
-    
-    for(let state of robot){
-        state['action'] = posMoves[Math.floor(Math.random() * posMoves.length)]
-    }
-    return robot
-
+    return robot;
 }
+
+
