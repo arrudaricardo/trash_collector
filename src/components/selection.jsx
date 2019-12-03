@@ -9,9 +9,10 @@ const Selection = () => {
     const [sampleSize, setSampleSize] = useState(100)
     const [seletionPercetage, setSelectionPercetage] = useState(0.1)
     const [iteration, setIteration] = useState(20)
-    const [robots, setRobots] = useState([])
+    const [robots, setRobots] = useState(genRobots(sampleSize))
 
     useEffect(() => {
+        console.log(robots)
     },[])
 
 
@@ -21,12 +22,30 @@ const Selection = () => {
 }
 
 
+
+
+
+
+
+function genRobots(numbers = 1){
+    let robots = []
+    for (let i = 0; i < numbers; i++){
+        robots.push(genRobot())
+        console.log('a')
+    }
+    
+    return  robots 
+
+}
+
+
+
+
+
+
+
+
+
+
 export default Selection
-
-
-
-
-
-
-
 

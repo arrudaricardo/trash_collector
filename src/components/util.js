@@ -220,18 +220,13 @@ export function getStateSum(gridState) {
     };
 
     export function genRobot() {
-        const robot = genCombination()
-        // const robot = [{'a':1}, {'a':1}, {'a':1}]
-        console.log("gen robot");
+        const possibilites = genCombination()
         const posMoves = ["up", "down", "left", "right", "getTrash"];
-        for (let i = 0; i < robot.length; i++){
-            robot[i]["action"] = Math.floor(Math.floor(Math.random() * posMoves.length))
-            if ( i < 5 ){
-            console.log(robot[i]['action'])
-
-            }
+        for (let i = 0; i < possibilites.length; i++){
+            possibilites[i]["action"] = Math.floor(Math.floor(Math.random() * posMoves.length))
         }
-    return robot;
+        // add metadata 
+        return {metadata: {score: 0, weight: 0}, possibilites }
 }
 
 
