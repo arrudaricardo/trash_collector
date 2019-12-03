@@ -48,11 +48,9 @@ export default () => {
                     <Route exact path="/">
                         <Grid />
                     </Route>
-
                     <Route path="/state">
                         <PosGrid />
                     </Route>
-
                     <Route path="/results">
                         <Results />
                     </Route>

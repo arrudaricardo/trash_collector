@@ -37,7 +37,7 @@ export default () => {
                         Results
                     </NavLink>
 
-                    <NavLink activeStyle={selected} to="/seletion">
+                    <NavLink activeStyle={selected} to="/selection">
                         Random Selection
                     </NavLink>
                 </Breadcrumbs>
