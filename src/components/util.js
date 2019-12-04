@@ -180,7 +180,7 @@ const genCombination = () => {
     };
     let posArray = Object.values(posStates);
     let arrStates = combineArrays(posArray);
-    let possiblesStates = [];
+    let possiblesStates = {};
 
     // remove impossible states
     for (let states of arrStates) {
@@ -211,7 +211,8 @@ const genCombination = () => {
                 });
                 let stateSum = getStateSum(statesObject);
                 statesObject["stateSum"] = stateSum;
-                possiblesStates.push(statesObject);
+                possiblesStates[stateSum] = statesObject;
+                // possiblesStates.push(statesObject);
             }
         }
     }
@@ -221,9 +222,9 @@ const genCombination = () => {
 function genRobot() {
     const possibilites = genCombination();
     const posMoves = ["up", "down", "left", "right", "getTrash"];
-    for (let i = 0; i < possibilites.length; i++) {
-        let { up, down, left, right, current } = possibilites[i];
-
+    // for (let i = 0; i < possibilites.length; i++) {
+    for (let poss of Object.values(possibilites)) {
+        let { up, down, left, right, current } = poss;
         let availibleMoves = [];
         //remove impossible moves
         [up, down, left, right].forEach((p, i) => {
@@ -235,14 +236,16 @@ function genRobot() {
         // if current has trash
         if (current === "trash") {
             availibleMoves.push("getTrash");
-            possibilites[i]["action"] =
+            //possibilites[currSum]
+            poss["action"] =
                 availibleMoves[
                     Math.floor(
                         Math.floor(Math.random() * availibleMoves.length)
                     )
                 ];
         } else {
-            possibilites[i]["action"] =
+            // possibilites[currSum];
+            poss["action"] =
                 availibleMoves[
                     Math.floor(
                         Math.floor(Math.random() * availibleMoves.length)
@@ -250,7 +253,10 @@ function genRobot() {
                 ];
         }
     }
-    return { metadata: { score: 0, weight: 0 }, possibilites };
+    return {
+        metadata: { score: 0, weight: 0 },
+        possibilites
+    };
 }
 
 export function genRobots(numbers = 1) {
@@ -261,3 +267,80 @@ export function genRobots(numbers = 1) {
 
     return robots;
 }
+
+// function moveRobot(gridArray, robotPos, robot) {
+//     switch (robot.move) {
+//         case "up":
+//             nextPos = gridArray[col][row - 1][0];
+//             return updateRobotPos(nextPos, robotPos, gridArray, robot);
+
+//         case "down":
+//             nextPos = gridArray[col][row + 1][0];
+//             return updateRobotPos(nextPos, robotPos, gridArray, robot);
+
+//         case "left":
+//             nextPos = gridArray[col - 1][row][0];
+//             return updateRobotPos(nextPos, robotPos, gridArray, robot);
+
+//         case "right":
+//             nextPos = gridArray[col + 1][row][0];
+//             return updateRobotPos(nextPos, robotPos, gridArray, robot);
+
+//         case "getTrash":
+//             // current position
+//             let currPos = gridArray[col][row][0];
+//             let hasTrash = gridArray[col][row][1];
+//             if (hasTrash)
+//                 return updateRobotPos(
+//                     currPos,
+//                     robotPos,
+//                     gridArray,
+//                     robot,
+//                     true
+//                 );
+//             break;
+
+//         default:
+//             throw Error("Please specify movment");
+//     }
+// }
+// function updateRobotPos(newPos, oldPos, gridArray, getTrash = false) {
+//     // update grid with new states
+//     const nextGridArray = () => {
+//         let prevGridArray = gridArray;
+
+//         if (getTrash) {
+//             // remove trash from grid from grid
+//             prevGridArray[oldPos[0]][oldPos[1]][1] = false;
+
+//             dispatch({ type: "setRobotPos", payload: newPos });
+
+//             // add to counter
+//             dispatch({
+//                 type: "setTrashCollected",
+//                 payload: state.grid.trashColleted + 1
+//             });
+//         } else {
+//             // remove robot position of GridArray
+//             prevGridArray[oldPos[0]][oldPos[1]][2] = false;
+//             // add robot new position into array
+//             prevGridArray[newPos[0]][newPos[1]][2] = true;
+
+//             dispatch({ type: "setRobotPos", payload: newPos });
+//         }
+
+//         dispatch({ type: "setMoves", payload: state.grid.moves + 1 });
+//         return prevGridArray;
+//     };
+//     dispatch({ type: "setGridArray", payload: nextGridArray() });
+
+//     return true;
+// }
+
+// function getNextMove(gridArray, robotPos) {
+//     let [robotState, stateSum] = checkRobotState(gridArray, robotPos);
+//     // let gridState = checkRobotState(gridArray, robotPos);
+//     // check if state is set on posibilities state by the user
+//     return robot.possibilites.stateSum[stateSum];
+// }
+
