@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { Pcontext } from "./game";
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles(theme => ({
     button: {
@@ -68,9 +68,9 @@ export default function Robot() {
             }
         } else if (move === "random") {
             // let moves = ["up", "down", "left", "right"];
-            let moves = Object.keys(gridState.robotState).filter( e => 
-                gridState.robotState[e] !== 'wall' && e !== 'current'
-                );
+            let moves = Object.keys(gridState.robotState).filter(
+                e => gridState.robotState[e] !== "wall" && e !== "current"
+            );
             move = moves[Math.floor(Math.random() * moves.length)];
         }
 
@@ -143,13 +143,13 @@ export default function Robot() {
             }
         };
     };
+
     arrowKeyListener();
 
     function updateRobotPos(newPos, oldPos, getTrash = false) {
         if (newPos === "wall") {
             return false;
         }
-
         // update grid with new states
         const nextGridArray = () => {
             let prevGridArray = state.grid.gridArray;
@@ -221,7 +221,9 @@ export default function Robot() {
             arr.some(e => e[1] === true)
         );
         if (isOver && !state.grid.gameOver) {
-            let score = Number((state.grid.moves / state.grid.trashColleted).toFixed(3))
+            let score = Number(
+                (state.grid.moves / state.grid.trashColleted).toFixed(3)
+            );
             let newResult = {
                 gameName: state.grid.gameName,
                 score,
@@ -242,8 +244,6 @@ export default function Robot() {
 
         // if running to much times
         if (state.grid.moves > state.grid.gridSize ** 4) {
-            //TODO: game fail
-
             let score = (state.grid.moves / state.grid.trashColleted).toFixed(
                 1
             ); // 100 is perfect score
@@ -270,7 +270,7 @@ export default function Robot() {
     }
 
     return (
-        <div style={{ display: "flex", justifyContent: 'end'}}>
+        <div style={{ display: "flex", justifyContent: "end" }}>
             <div>
                 <Tooltip enterDelay={500} title="Start Game">
                     <Button
@@ -300,9 +300,7 @@ export default function Robot() {
                 />
 
                 <SwitchMode setMode={setMode} mode={mode} />
-                {mode === 'dev' && 
-                <div>StateId: {gridState.stateSum} </div>
-                } 
+                {mode === "dev" && <div>StateId: {gridState.stateSum} </div>}
             </div>
             <div className="robot-information">
                 <div className="trashColleted">
@@ -310,9 +308,9 @@ export default function Robot() {
                 </div>
                 <div className="moves">Moves: {state.grid.moves}</div>
             </div>
-            {mode === 'dev' &&
-            <RobotStateDisplay gridState={gridState.robotState} />
-                }
+            {mode === "dev" && (
+                <RobotStateDisplay gridState={gridState.robotState} />
+            )}
         </div>
     );
 }

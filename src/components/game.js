@@ -35,9 +35,9 @@ export default () => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     // logger
-    useEffect(() => {
-        console.log(state);
-    });
+    // useEffect(() => {
+    // console.log(state);
+    // });
 
     return (
         <>
