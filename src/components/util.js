@@ -254,6 +254,7 @@ function genRobot() {
         }
     }
     return {
+        currRun: { moves: 0, trashColleted: 0 },
         metadata: { score: 0, weight: 0 },
         possibilites
     };
@@ -264,83 +265,186 @@ export function genRobots(numbers = 1) {
     for (let i = 0; i < numbers; i++) {
         robots.push(genRobot());
     }
-
     return robots;
 }
 
-// function moveRobot(gridArray, robotPos, robot) {
-//     switch (robot.move) {
-//         case "up":
-//             nextPos = gridArray[col][row - 1][0];
-//             return updateRobotPos(nextPos, robotPos, gridArray, robot);
+function moveRobot(
+    gridArray,
+    robotPos,
+    move,
+    robot,
+    setGridArray,
+    setRobotPos
+) {
+    let [col, row] = robotPos;
+    let nextPos;
+    switch (move) {
+        case "up":
+            nextPos = gridArray[col][row - 1][0];
+            return updateRobotPos(
+                nextPos,
+                robotPos,
+                gridArray,
+                robot,
+                setGridArray,
+                setRobotPos
+            );
 
-//         case "down":
-//             nextPos = gridArray[col][row + 1][0];
-//             return updateRobotPos(nextPos, robotPos, gridArray, robot);
+        case "down":
+            nextPos = gridArray[col][row + 1][0];
+            return updateRobotPos(
+                nextPos,
+                robotPos,
+                gridArray,
+                robot,
+                setGridArray,
+                setRobotPos
+            );
 
-//         case "left":
-//             nextPos = gridArray[col - 1][row][0];
-//             return updateRobotPos(nextPos, robotPos, gridArray, robot);
+        case "left":
+            nextPos = gridArray[col - 1][row][0];
+            return updateRobotPos(
+                nextPos,
+                robotPos,
+                gridArray,
+                robot,
+                setGridArray,
+                setRobotPos
+            );
 
-//         case "right":
-//             nextPos = gridArray[col + 1][row][0];
-//             return updateRobotPos(nextPos, robotPos, gridArray, robot);
+        case "right":
+            nextPos = gridArray[col + 1][row][0];
+            return updateRobotPos(
+                nextPos,
+                robotPos,
+                gridArray,
+                robot,
+                setGridArray,
+                setRobotPos
+            );
 
-//         case "getTrash":
-//             // current position
-//             let currPos = gridArray[col][row][0];
-//             let hasTrash = gridArray[col][row][1];
-//             if (hasTrash)
-//                 return updateRobotPos(
-//                     currPos,
-//                     robotPos,
-//                     gridArray,
-//                     robot,
-//                     true
-//                 );
-//             break;
+        case "getTrash":
+            // current position
+            let currPos = gridArray[col][row][0];
+            return updateRobotPos(
+                currPos,
+                robotPos,
+                gridArray,
+                robot,
+                setGridArray,
+                setRobotPos,
+                true
+            );
 
-//         default:
-//             throw Error("Please specify movment");
-//     }
-// }
-// function updateRobotPos(newPos, oldPos, gridArray, getTrash = false) {
-//     // update grid with new states
-//     const nextGridArray = () => {
-//         let prevGridArray = gridArray;
+        default:
+            throw Error("Please specify movment");
+    }
+}
+function updateRobotPos(
+    newPos,
+    oldPos,
+    gridArray,
+    robot,
+    setGridArray,
+    setRobotPos,
+    getTrash = false
+) {
+    // update grid with new states
+    const nextGridArray = () => {
+        let prevGridArray = gridArray;
 
-//         if (getTrash) {
-//             // remove trash from grid from grid
-//             prevGridArray[oldPos[0]][oldPos[1]][1] = false;
+        if (getTrash) {
+            // remove trash from grid from grid
+            prevGridArray[oldPos[0]][oldPos[1]][1] = false;
 
-//             dispatch({ type: "setRobotPos", payload: newPos });
+            // dispatch({ type: "setRobotPos", payload: newPos });
 
-//             // add to counter
-//             dispatch({
-//                 type: "setTrashCollected",
-//                 payload: state.grid.trashColleted + 1
-//             });
-//         } else {
-//             // remove robot position of GridArray
-//             prevGridArray[oldPos[0]][oldPos[1]][2] = false;
-//             // add robot new position into array
-//             prevGridArray[newPos[0]][newPos[1]][2] = true;
+            // add to counter
+            robot.currRun.trashColleted += 1;
+            // dispatch({
+            //     type: "setTrashCollected",
+            //     payload: state.grid.trashColleted + 1
+            // });
+        } else {
+            // remove robot position of GridArray
+            prevGridArray[oldPos[0]][oldPos[1]][2] = false;
+            // add robot new position into array
+            prevGridArray[newPos[0]][newPos[1]][2] = true;
 
-//             dispatch({ type: "setRobotPos", payload: newPos });
-//         }
+            // dispatch({ type: "setRobotPos", payload: newPos });
+        }
 
-//         dispatch({ type: "setMoves", payload: state.grid.moves + 1 });
-//         return prevGridArray;
-//     };
-//     dispatch({ type: "setGridArray", payload: nextGridArray() });
+        // dispatch({ type: "setMoves", payload: state.grid.moves + 1 });
+        robot.currRun.moves += 1;
+        return prevGridArray;
+    };
+    let nextArray = nextGridArray();
+    setRobotPos(newPos);
+    setGridArray(nextArray);
+    // dispatch({ type: "setGridArray", payload: nextGridArray() });
+    return [nextArray, newPos];
+}
 
-//     return true;
-// }
+function getNextMove(gridArray, robotPos, robot) {
+    let { robotState, stateSum } = checkRobotState(gridArray, robotPos);
+    return robot.possibilites[stateSum].action;
+}
+//
 
-// function getNextMove(gridArray, robotPos) {
-//     let [robotState, stateSum] = checkRobotState(gridArray, robotPos);
-//     // let gridState = checkRobotState(gridArray, robotPos);
-//     // check if state is set on posibilities state by the user
-//     return robot.possibilites.stateSum[stateSum];
-// }
+export function runRobot(
+    gridArray,
+    robotPos,
+    robot,
+    setGridArray,
+    setRobotPos
+) {
+    robot.currRun.moves = 0;
+    robot.trashColleted = 0;
+    console.log(gridArray);
+    getGridArrayStateSum(gridArray);
+    // while (!gameOver(gridArray)) {
+    for (let i = 0; i < 1; i++) {
+        let nextMove = getNextMove(gridArray, robotPos, robot);
+        let newState = moveRobot(
+            gridArray,
+            robotPos,
+            nextMove,
+            robot,
+            setGridArray,
+            setRobotPos
+        );
+        gridArray = newState[0];
+        robotPos = newState[1];
+    }
+}
 
+function gameOver(gridArray) {
+    return !gridArray.some(arr => arr.some(e => e[1] === true));
+}
+
+function infinitLoop(gridArray, robotPos) {
+    // if gridArray and robotPos same as before
+    let oldStates = [];
+    return function() {};
+}
+
+function getGridArrayStateSum(gridArray) {
+    let stateSum = 0;
+
+    let boxNum = 1;
+    for (let i = 0; i < gridArray.length; i++) {
+        for (let j = 0; j < gridArray[i].length; j++) {
+            let box = gridArray[i][j];
+            // if has trash and robot
+            if (box[1] && box[2]) {
+                stateSum += boxNum * 3;
+            } else if (box[1]) {
+                stateSum += boxNum * 2;
+            } else if (box[2]) {
+                stateSum += boxNum * 1;
+            }
+            boxNum++;
+        }
+    }
+    console.log(boxNum - 1, stateSum);
+}
