@@ -351,37 +351,27 @@ function updateRobotPos(
 ) {
     // update grid with new states
     const nextGridArray = () => {
-        let prevGridArray = gridArray;
+        let prevGridArray = [...gridArray];
 
         if (getTrash) {
             // remove trash from grid from grid
             prevGridArray[oldPos[0]][oldPos[1]][1] = false;
-
-            // dispatch({ type: "setRobotPos", payload: newPos });
-
-            // add to counter
             robot.currRun.trashColleted += 1;
-            // dispatch({
-            //     type: "setTrashCollected",
-            //     payload: state.grid.trashColleted + 1
-            // });
         } else {
             // remove robot position of GridArray
+            // console.log(oldPos, newPos)
             prevGridArray[oldPos[0]][oldPos[1]][2] = false;
             // add robot new position into array
             prevGridArray[newPos[0]][newPos[1]][2] = true;
-
-            // dispatch({ type: "setRobotPos", payload: newPos });
         }
 
-        // dispatch({ type: "setMoves", payload: state.grid.moves + 1 });
         robot.currRun.moves += 1;
         return prevGridArray;
     };
     let nextArray = nextGridArray();
-    setRobotPos(newPos);
-    setGridArray(nextArray);
-    // dispatch({ type: "setGridArray", payload: nextGridArray() });
+    setRobotPos(newPos);  // update React 
+    setGridArray(nextArray); // update React
+    // console.log(nextArray)
     return [nextArray, newPos];
 }
 
@@ -391,6 +381,7 @@ function getNextMove(gridArray, robotPos, robot) {
 }
 //
 
+// run the sigle robot
 export function runRobot(
     gridArray,
     robotPos,
@@ -400,21 +391,29 @@ export function runRobot(
 ) {
     robot.currRun.moves = 0;
     robot.trashColleted = 0;
-    console.log(gridArray);
-    getGridArrayStateSum(gridArray);
+    let checkInfinitLoop = infinitLoop()
+    let localGridArray =  gridArray
+    let localRobotPos =  robotPos
+
     // while (!gameOver(gridArray)) {
-    for (let i = 0; i < 1; i++) {
-        let nextMove = getNextMove(gridArray, robotPos, robot);
+    for (let i = 0; i < 10; i++) {
+        checkInfinitLoop(localGridArray, localRobotPos)
+        let nextMove = getNextMove(localGridArray, localRobotPos, robot);
+
         let newState = moveRobot(
-            gridArray,
-            robotPos,
+            // gridArray,
+            localGridArray,
+            // robotPos,
+            localRobotPos,
             nextMove,
             robot,
             setGridArray,
             setRobotPos
         );
-        gridArray = newState[0];
-        robotPos = newState[1];
+        // console.log(localRobotPos)
+        // console.log(localGridArray)
+        localGridArray = newState[0]; // update gridArray
+        localRobotPos = newState[1];  // update robotPos
     }
 }
 
@@ -422,29 +421,69 @@ function gameOver(gridArray) {
     return !gridArray.some(arr => arr.some(e => e[1] === true));
 }
 
-function infinitLoop(gridArray, robotPos) {
+function infinitLoop() {
     // if gridArray and robotPos same as before
-    let oldStates = [];
-    return function() {};
+    let passedState = {};  // {robotPos{trashSum}}
+
+    return function(gridArray) {
+       let [currentStateSum, robotBoxNum] = getGridArrayStateSum(gridArray)
+
+        let trashStates = passedState[robotBoxNum]
+        if (!trashStates){ // if no passed state in robot location
+            passedState[robotBoxNum] = [currentStateSum] // add new location with trash sum
+        }else{ // if robot been in passed location
+            if (trashStates.includes(currentStateSum)){ // check if trash sum already in the location
+                return true  // robot been save position with same trash configuration
+
+            }else {
+                passedState[robotBoxNum].push(currentStateSum)
+            }
+
+        }
+        return false
+    };
 }
 
 function getGridArrayStateSum(gridArray) {
+    //return a uniq gridArray value that represent the state grid
     let stateSum = 0;
+    let robotPos = []
 
     let boxNum = 1;
     for (let i = 0; i < gridArray.length; i++) {
         for (let j = 0; j < gridArray[i].length; j++) {
             let box = gridArray[i][j];
-            // if has trash and robot
-            if (box[1] && box[2]) {
-                stateSum += boxNum * 3;
-            } else if (box[1]) {
-                stateSum += boxNum * 2;
-            } else if (box[2]) {
-                stateSum += boxNum * 1;
+            
+            if (box[1]){ // has trash
+                stateSum += boxNum * (gridArray.length ** 2)
             }
+            if (box[2]){ // has robot
+                robotPos = boxNum
+            }
+            // stateSum += boxNum
+
             boxNum++;
         }
     }
-    console.log(boxNum - 1, stateSum);
+    return [stateSum, robotPos]
+}
+
+let primes = [2,3,5,7]
+function prime(n){
+    let lastPrime = primes[primes.length - 1] + 1
+    while (true) {
+        if (isPrime(lastPrime)){
+            primes.push(lastPrime)
+            return true
+        }
+        lastPrime++
+    }
+
+}
+
+function isPrime(num){
+    for(let i = 2; i < num; i++){
+        if (num % i === 0) return false
+    }
+    return true
 }

@@ -7,14 +7,14 @@ import Grid from './display_run'
 
 
 const Selection = () => {
-    const [sampleSize, setSampleSize] = useState(1)
+    const [sampleSize, setSampleSize] = useState(10)
     const [seletionPercetage, setSelectionPercetage] = useState(0.1)
     const [iteration, setIteration] = useState(20)
     const [robots, setRobots] = useState(genRobots(sampleSize))
 
     // current run states
     const [gridSize, setGridSize] = useState(5)
-    const [trashChange, setTrashChange] = useState(0)
+    const [trashChange, setTrashChange] = useState(10)
     const gridRobotPos = generateGridArray(gridSize, trashChange)
     const [gridArray, setGridArray] = useState(gridRobotPos[0])
     const [robotPos, setRobotPos] = useState(gridRobotPos[1])
