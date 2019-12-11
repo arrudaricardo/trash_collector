@@ -1,3 +1,5 @@
+import { func } from "prop-types";
+
 export const stateValues = {
     left: { trash: 2, empty: 3, wall: 5 },
     right: { trash: 7, empty: 11, wall: 13 },
@@ -254,8 +256,8 @@ function genRobot() {
         }
     }
     return {
-        currRun: { moves: 0, trashColleted: 0 },
-        metadata: { score: 0, weight: 0 },
+        currRun: { score: 0, moves: 0, trashColleted: 0 },
+        metadata: { scores: [], averageScore: 0, weight: 0 },
         possibilites
     };
 }
@@ -389,15 +391,15 @@ export function runRobot(
     setGridArray,
     setRobotPos
 ) {
+    setGridArray(gridArray) // reset grid array
+
     robot.currRun.moves = 0;
     robot.trashColleted = 0;
     let checkInfinitLoop = infinitLoop()
     let localGridArray =  gridArray
     let localRobotPos =  robotPos
 
-    // while (!gameOver(gridArray)) {
-    for (let i = 0; i < 10; i++) {
-        checkInfinitLoop(localGridArray, localRobotPos)
+    while (!gameOver(gridArray) && !checkInfinitLoop(localGridArray)) {
         let nextMove = getNextMove(localGridArray, localRobotPos, robot);
 
         let newState = moveRobot(
@@ -410,11 +412,25 @@ export function runRobot(
             setGridArray,
             setRobotPos
         );
-        // console.log(localRobotPos)
-        // console.log(localGridArray)
         localGridArray = newState[0]; // update gridArray
         localRobotPos = newState[1];  // update robotPos
     }
+    // remove robot from array
+    // console.log(localRobotPos)
+    // update robot score
+
+    updateRobotScore(robot)
+    return robot
+}
+
+// calculate robot score
+function updateRobotScore(robot){
+    let score = (robot.currRun.moves) + (robot.currRun.trashColleted * 100)
+
+    robot.currRun.score = score
+    robot.metadata.scores.push(score)
+    return robot
+
 }
 
 function gameOver(gridArray) {
