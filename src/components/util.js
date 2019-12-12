@@ -371,8 +371,10 @@ function updateRobotPos(
         return prevGridArray;
     };
     let nextArray = nextGridArray();
-    setRobotPos(newPos);  // update React 
-    setGridArray(nextArray); // update React
+
+    // setRobotPos(newPos);  // update React 
+    // setGridArray(nextArray); // update React
+
     // console.log(nextArray)
     return [nextArray, newPos];
 }
@@ -391,7 +393,9 @@ export function runRobot(
     setGridArray,
     setRobotPos
 ) {
-    setGridArray(gridArray) // reset grid array
+    // setGridArray(gridArray) // reset grid array
+    // setRobotPos(robotPos)
+    console.log(robotPos)
 
     robot.currRun.moves = 0;
     robot.trashColleted = 0;
@@ -399,25 +403,21 @@ export function runRobot(
     let localGridArray =  gridArray
     let localRobotPos =  robotPos
 
-    while (!gameOver(gridArray) && !checkInfinitLoop(localGridArray)) {
+    while (!gameOver(localGridArray) && !checkInfinitLoop(localGridArray)) {
         let nextMove = getNextMove(localGridArray, localRobotPos, robot);
 
         let newState = moveRobot(
-            // gridArray,
             localGridArray,
-            // robotPos,
             localRobotPos,
             nextMove,
             robot,
             setGridArray,
             setRobotPos
         );
+
         localGridArray = newState[0]; // update gridArray
         localRobotPos = newState[1];  // update robotPos
     }
-    // remove robot from array
-    // console.log(localRobotPos)
-    // update robot score
 
     updateRobotScore(robot)
     return robot
@@ -440,15 +440,19 @@ function gameOver(gridArray) {
 function infinitLoop() {
     // if gridArray and robotPos same as before
     let passedState = {};  // {robotPos{trashSum}}
+    console.log(passedState)
 
     return function(gridArray) {
+        // robotBoxnum is the position of the robot in the grid startin at 1
        let [currentStateSum, robotBoxNum] = getGridArrayStateSum(gridArray)
 
         let trashStates = passedState[robotBoxNum]
+
         if (!trashStates){ // if no passed state in robot location
             passedState[robotBoxNum] = [currentStateSum] // add new location with trash sum
         }else{ // if robot been in passed location
             if (trashStates.includes(currentStateSum)){ // check if trash sum already in the location
+                console.log('inf',{trashStates, robotBoxNum}, passedState)
                 return true  // robot been save position with same trash configuration
 
             }else {

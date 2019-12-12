@@ -7,49 +7,62 @@ import Grid from './display_run'
 
 
 const Selection = () => {
-    const [sampleSize, setSampleSize] = useState(10)
+    const [sampleSize, setSampleSize] = useState(1)
     const [selectionPercetage, setSelectionPercetage] = useState(0.1)
-    const [iteration, setIteration] = useState(20)
+    const [iteration, setIteration] = useState(1)
     const [robots, setRobots] = useState(genRobots(sampleSize))
 
     // current run states
     const [running, setRunning] = useState(false)
     const [gridSize, setGridSize] = useState(5)
     const [trashChange, setTrashChange] = useState(10)
-    const gridRobotPos = generateGridArray(gridSize, trashChange)
-    const [gridArray, setGridArray] = useState(gridRobotPos[0])
-    const [robotPos, setRobotPos] = useState(gridRobotPos[1])
+    const [gridArray, setGridArray] = useState(null)
+    // const [robotPos, setRobotPos] = useState(null)
 
 
     useEffect(() => {
-        if (!running){
-        robotIteration(robots, gridArray, robotPos, setGridArray, iteration, selectionPercetage, setRobotPos)
-        setRunning(true)
+        if (running){ 
+        // robotIteration(robots, gridArray, robotPos, setGridArray, iteration, selectionPercetage, setRobotPos, gridSize, trashChange)
+        setRunning(false)
         }
-    },[])
+    },[running])
+
+    const runGame = () => {
+        // const gridRobotPos = generateGridArray(gridSize, trashChange)
+        // setRobotPos(gridRobotPos[1])
+        // setGridArray(gridRobotPos[0])
+
+        setGridArray(generateGridArray(gridSize, trashChange))
+        setGridArray = null
+        setRobotPos = null
+        robotIteration(robots, gridArray[0], gridArray[1], setGridArray, iteration, selectionPercetage, setRobotPos, gridSize, trashChange)
+        
+        // setRunning(true)
+    }
 
     return (<div >
-        <Grid gridArray={gridArray} />
+        <button onClick={() => runGame()}>RUN</button>
+        {(gridArray !== null) && <Grid gridArray={gridArray[0]} /> }
         </div>)
 }
 
 
-function robotIteration(robots, gridArray, robotPos, setGridArray, iteration, selectionPercetage, setRobotPos ){
+
+function robotIteration(robots, gridArray, robotPos, setGridArray, iteration, selectionPercetage, setRobotPos, gridSize, trashChange){
     // TODO: chnage gridArray for each new iteration
     // TODO: not selecting best scores
+
     for (let i = 0; i < iteration; i++){
         let newrobots = robotSampleRun(gridArray, robotPos, robots, setGridArray, setRobotPos)
-        // console.log(newrobots)
         robots = selectRobotsByScore(newrobots, selectionPercetage)
     }
-    // console.log('final',robots)
     return robots
 }
 
 function robotSampleRun(gridArray, robotPos, robots, setGridArray, setRobotPos){
     let newRobots = []
-    let currentGridArray = [...gridArray]
-    let currentRobotPos = [...robotPos]
+    let currentGridArray = gridArray
+    let currentRobotPos = robotPos
 
     for (let robot of robots){
         let newRobot = runRobot(currentGridArray, currentRobotPos, robot, setGridArray, setRobotPos)
@@ -64,7 +77,6 @@ function selectRobotsByScore(robots, seletionPercetage){
 
     //sort by score
     robots.sort( (a,b) => a.metadata.currRun - b.metadata.currRun)
-    console.log(robots)
 
     while( selectedRobots.length <= selectionNumber){
         for (let robot of robots){
@@ -82,7 +94,6 @@ function selectRobotsByScore(robots, seletionPercetage){
         
     }
     
-    console.log(selectedRobots)
     return selectedRobots
 }
 
