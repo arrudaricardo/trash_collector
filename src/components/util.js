@@ -386,7 +386,9 @@ export function runRobot(
     // setGridArray(gridArray) // reset grid array
 
     robot.currRun.moves = 0;
-    robot.trashColleted = 0;
+    robot.currRun.trashColleted = 0;
+    robot.currRun.score = 0;
+
     let checkInfinitLoop = infinitLoop()
     let localGridArray =  gridArray
     let localRobotPos =  robotPos  //initial robotPos
@@ -394,7 +396,6 @@ export function runRobot(
     while (!gameOver(localGridArray) && !checkInfinitLoop(localGridArray)) {
         let nextMove = getNextMove(localGridArray, localRobotPos, robot);
 
-        console.log('next move:', nextMove)
 
         let newState = moveRobot(
             localGridArray,

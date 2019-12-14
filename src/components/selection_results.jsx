@@ -6,14 +6,9 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { Pcontext } from "./game";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
-import MenuItem from "@material-ui/core/MenuItem";
-import DeleteIcon from "@material-ui/icons/Delete";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from '@material-ui/core/Tooltip';
+import AddIcon from '@material-ui/icons/Add';
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -24,6 +19,7 @@ const useStyles = makeStyles(theme => ({
         // minWidth: 650,
     },
     header: {
+      fontSize: '0.7em',
         fontWeight: 900,
         background: "linear-gradient(30deg, #FFFF 10%, #ffeee6 100%)"
     },
@@ -40,6 +36,9 @@ const useStyles = makeStyles(theme => ({
     },
     inputs: {
         display: "flex"
+    },
+    button: {
+        display: "flex"
     }
 }));
 
@@ -52,20 +51,21 @@ export default function Results(robots) {
     return (
         <div>
             <Paper className={classes.root}>
-                <Table className={classes.table} aria-label="simple table">
+                <Table size='small' className={classes.table} aria-label="simple table">
                     <TableHead className={classes.header}>
                         <TableRow>
                             <TableCell align="right">Run Score</TableCell>
                             <TableCell align="right">Average Score</TableCell>
                             <TableCell align="right">Moves</TableCell>
                             <TableCell align="right">Trash Collected</TableCell>
+                            <TableCell size='small' align="left"></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {Object.values(robots).map( (robot,i) => {
                                 return (
-                                    <TableRow key={i}>
-                                        <TableCell align="center">
+                                    <TableRow tabIndex={-1} key={i}>
+                                        <TableCell align='center' scope="row" padding="none">
                                           {Math.round(robot.currRun.score)}
                                         </TableCell>
                                         <TableCell align="center">
@@ -76,6 +76,9 @@ export default function Results(robots) {
                                         </TableCell>
                                         <TableCell align="center">
                                           {robot.currRun.trashColleted}
+                                        </TableCell>
+                                        <TableCell align='left' padding='none'>
+                                          <AddIcon fontSize='small'/>
                                         </TableCell>
                                     </TableRow>
                                 );
