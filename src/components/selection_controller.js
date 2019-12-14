@@ -93,9 +93,8 @@ export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSele
         </div>
             </Tooltip>
 
-
             <div>
-                <Tooltip title="reset grid" placement="top">
+                <Tooltip title="Run Sample" placement="top">
                     <Button className={classes.button} variant="contained" color="primary" onClick={handleRun}>
                         {" "}
                         Run{" "}
