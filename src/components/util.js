@@ -361,14 +361,12 @@ function updateRobotPos(
             prevGridArray[newPos[0]][newPos[1]][3] = true;
         }
 
-        robot.currRun.moves += 1;
         return prevGridArray;
     };
     let nextArray = nextGridArray();
 
     // setGridArray(nextArray); // update React
 
-    // console.log(nextArray)
     return [nextArray, newPos];
 }
 
@@ -396,6 +394,8 @@ export function runRobot(
     while (!gameOver(localGridArray) && !checkInfinitLoop(localGridArray)) {
         let nextMove = getNextMove(localGridArray, localRobotPos, robot);
 
+        console.log('next move:', nextMove)
+
         let newState = moveRobot(
             localGridArray,
             localRobotPos,
@@ -403,6 +403,9 @@ export function runRobot(
             robot,
             setGridArray
         );
+
+        // add a move to robot
+        robot.currRun.moves += 1;
 
         localGridArray = newState[0]; // update gridArray
         localRobotPos = newState[1];  // update robotPos
@@ -429,7 +432,6 @@ function gameOver(gridArray) {
 function infinitLoop() {
     // if gridArray and robotPos same as before
     let passedState = {};  // {robotPos{trashSum}}
-    console.log({passedState})
 
     return function(gridArray) {
         // robotBoxnum is the position of the robot in the grid startin at 1
@@ -441,7 +443,6 @@ function infinitLoop() {
             passedState[robotBoxNum] = [currentStateSum] // add new location with trash sum
         }else{ // if robot been in passed location
             if (trashStates.includes(currentStateSum)){ // check if trash sum already in the location
-                console.log('inf',{trashStates, robotBoxNum}, passedState)
                 return true  // robot been save position with same trash configuration
 
             }else {
@@ -457,7 +458,6 @@ function getGridArrayStateSum(gridArray) {
     //return a uniq gridArray value that represent the state grid
     let stateSum = 0;
     let robotPos = []
-
     let boxNum = 1;
     for (let i = 0; i < gridArray.length; i++) {
         for (let j = 0; j < gridArray[i].length; j++) {

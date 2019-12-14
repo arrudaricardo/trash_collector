@@ -2,13 +2,14 @@ import React,{useState, useEffect} from 'react'
 import {genRobots, generateGridArray, checkPos, runRobot} from './util'
 import Grid from './display_run'
 import Controller from './selection_controller'
+import Result from './selection_results'
 
 //TODO: get x random sample test and weight by score (hight score higher chance to be selected) and select y percentage and fill with random z times 
 //Number of states (2 * 3**4 ) = 162 - 25 =  (137 possible states)
 
 
 const Selection = () => {
-    const [sampleSize, setSampleSize] = useState(1)
+    const [sampleSize, setSampleSize] = useState(2)
     const [selectionPercetage, setSelectionPercetage] = useState(0.1)
     const [iteration, setIteration] = useState(1)
     const [robots, setRobots] = useState(genRobots(sampleSize))
@@ -30,8 +31,8 @@ const Selection = () => {
     }
 
     useEffect(() => {
-        console.log("newgrid", gridArray)
         if (running){ 
+            console.log(gridArray)
             robotIteration(robots, gridArray[0], gridArray[1], setGridArray, iteration, selectionPercetage, gridSize, trashChange)
             setRunning(false)
         }
@@ -39,10 +40,14 @@ const Selection = () => {
 
     return (<div >
         <Controller runGame={runGame} sampleSize={sampleSize} setSampleSize={setSampleSize} selectionPercetage={selectionPercetage} setSelectionPercetage={setSelectionPercetage} iteration={iteration} setIteration={setIteration} gridSize={gridSize} setGridSize={setGridSize} trashChange={trashChange} setTrashChange={setTrashChange} />
-        {(gridArray !== null) && <Grid gridArray={gridArray[0]} /> }
+        {(gridArray !== null) &&
+        <div style={{display:'flex', padding:'0.1em'}} >
+            <Grid gridArray={gridArray[0]} /> 
+            <Result {...robots} /> 
+        </div>
+        }
         </div>)
 }
-
 
 
 function robotIteration(robots, gridArray, robotPos, setGridArray, iteration, selectionPercetage, setRobotPos, gridSize, trashChange){
