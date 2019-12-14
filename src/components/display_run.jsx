@@ -1,5 +1,5 @@
 import React from 'react';
-import Box from './box'
+import Box from './selection_box'
 
 export default ({gridArray}) => {
 
@@ -12,6 +12,7 @@ export default ({gridArray}) => {
                     id={e[0]}
                     hasRobot={e[2]}
                     hasTrash={e[1]}
+                    passedPos={e[3]}
                 />
             );
         });

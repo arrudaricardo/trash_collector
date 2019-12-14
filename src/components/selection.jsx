@@ -1,6 +1,7 @@
 import React,{useState, useEffect} from 'react'
 import {genRobots, generateGridArray, checkPos, runRobot} from './util'
 import Grid from './display_run'
+import Controller from './selection_controller'
 
 //TODO: get x random sample test and weight by score (hight score higher chance to be selected) and select y percentage and fill with random z times 
 //Number of states (2 * 3**4 ) = 162 - 25 =  (137 possible states)
@@ -17,31 +18,27 @@ const Selection = () => {
     const [gridSize, setGridSize] = useState(5)
     const [trashChange, setTrashChange] = useState(10)
     const [gridArray, setGridArray] = useState(null)
-    // const [robotPos, setRobotPos] = useState(null)
 
 
-    useEffect(() => {
-        if (running){ 
-        // robotIteration(robots, gridArray, robotPos, setGridArray, iteration, selectionPercetage, setRobotPos, gridSize, trashChange)
-        setRunning(false)
-        }
-    },[running])
 
     const runGame = () => {
-        // const gridRobotPos = generateGridArray(gridSize, trashChange)
-        // setRobotPos(gridRobotPos[1])
-        // setGridArray(gridRobotPos[0])
-
-        setGridArray(generateGridArray(gridSize, trashChange))
-        setGridArray = null
-        setRobotPos = null
-        robotIteration(robots, gridArray[0], gridArray[1], setGridArray, iteration, selectionPercetage, setRobotPos, gridSize, trashChange)
+        setGridArray(() => {
+        setRunning(true);
+        return generateGridArray(gridSize, trashChange)
+        })
         
-        // setRunning(true)
     }
 
+    useEffect(() => {
+        console.log("newgrid", gridArray)
+        if (running){ 
+            robotIteration(robots, gridArray[0], gridArray[1], setGridArray, iteration, selectionPercetage, gridSize, trashChange)
+            setRunning(false)
+        }
+    },[gridArray])
+
     return (<div >
-        <button onClick={() => runGame()}>RUN</button>
+        <Controller runGame={runGame} sampleSize={sampleSize} setSampleSize={setSampleSize} selectionPercetage={selectionPercetage} setSelectionPercetage={setSelectionPercetage} iteration={iteration} setIteration={setIteration} gridSize={gridSize} setGridSize={setGridSize} trashChange={trashChange} setTrashChange={setTrashChange} />
         {(gridArray !== null) && <Grid gridArray={gridArray[0]} /> }
         </div>)
 }

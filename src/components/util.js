@@ -31,7 +31,8 @@ export function generateGridArray(size, chanceOfTrash) {
             const pos = [x, y];
             const hasTrash = Math.random() * 100 < chanceOfTrash ? true : false;
             const hasRobot = checkPos(x, y);
-            boxs.push([pos, hasTrash, hasRobot]);
+            const passPos = checkPos(x,y)
+            boxs.push([pos, hasTrash, hasRobot, passPos]);
         }
         grid.push(boxs);
     }
@@ -275,8 +276,7 @@ function moveRobot(
     robotPos,
     move,
     robot,
-    setGridArray,
-    setRobotPos
+    setGridArray
 ) {
     let [col, row] = robotPos;
     let nextPos;
@@ -288,8 +288,7 @@ function moveRobot(
                 robotPos,
                 gridArray,
                 robot,
-                setGridArray,
-                setRobotPos
+                setGridArray
             );
 
         case "down":
@@ -299,8 +298,7 @@ function moveRobot(
                 robotPos,
                 gridArray,
                 robot,
-                setGridArray,
-                setRobotPos
+                setGridArray
             );
 
         case "left":
@@ -310,8 +308,7 @@ function moveRobot(
                 robotPos,
                 gridArray,
                 robot,
-                setGridArray,
-                setRobotPos
+                setGridArray
             );
 
         case "right":
@@ -321,8 +318,7 @@ function moveRobot(
                 robotPos,
                 gridArray,
                 robot,
-                setGridArray,
-                setRobotPos
+                setGridArray
             );
 
         case "getTrash":
@@ -334,7 +330,6 @@ function moveRobot(
                 gridArray,
                 robot,
                 setGridArray,
-                setRobotPos,
                 true
             );
 
@@ -348,7 +343,6 @@ function updateRobotPos(
     gridArray,
     robot,
     setGridArray,
-    setRobotPos,
     getTrash = false
 ) {
     // update grid with new states
@@ -360,11 +354,11 @@ function updateRobotPos(
             prevGridArray[oldPos[0]][oldPos[1]][1] = false;
             robot.currRun.trashColleted += 1;
         } else {
-            // remove robot position of GridArray
-            // console.log(oldPos, newPos)
             prevGridArray[oldPos[0]][oldPos[1]][2] = false;
-            // add robot new position into array
             prevGridArray[newPos[0]][newPos[1]][2] = true;
+
+            //add new track for past position
+            prevGridArray[newPos[0]][newPos[1]][3] = true;
         }
 
         robot.currRun.moves += 1;
@@ -372,7 +366,6 @@ function updateRobotPos(
     };
     let nextArray = nextGridArray();
 
-    // setRobotPos(newPos);  // update React 
     // setGridArray(nextArray); // update React
 
     // console.log(nextArray)
@@ -390,18 +383,15 @@ export function runRobot(
     gridArray,
     robotPos,
     robot,
-    setGridArray,
-    setRobotPos
+    setGridArray
 ) {
     // setGridArray(gridArray) // reset grid array
-    // setRobotPos(robotPos)
-    console.log(robotPos)
 
     robot.currRun.moves = 0;
     robot.trashColleted = 0;
     let checkInfinitLoop = infinitLoop()
     let localGridArray =  gridArray
-    let localRobotPos =  robotPos
+    let localRobotPos =  robotPos  //initial robotPos
 
     while (!gameOver(localGridArray) && !checkInfinitLoop(localGridArray)) {
         let nextMove = getNextMove(localGridArray, localRobotPos, robot);
@@ -411,8 +401,7 @@ export function runRobot(
             localRobotPos,
             nextMove,
             robot,
-            setGridArray,
-            setRobotPos
+            setGridArray
         );
 
         localGridArray = newState[0]; // update gridArray
@@ -440,7 +429,7 @@ function gameOver(gridArray) {
 function infinitLoop() {
     // if gridArray and robotPos same as before
     let passedState = {};  // {robotPos{trashSum}}
-    console.log(passedState)
+    console.log({passedState})
 
     return function(gridArray) {
         // robotBoxnum is the position of the robot in the grid startin at 1
@@ -507,3 +496,5 @@ function isPrime(num){
     }
     return true
 }
+
+
