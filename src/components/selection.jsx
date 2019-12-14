@@ -46,7 +46,6 @@ const Selection = () => {
 
 
 function robotIteration(robots, gridArray, robotPos, setGridArray, iteration, selectionPercetage, setRobotPos, gridSize, trashChange){
-    // TODO: chnage gridArray for each new iteration
     // TODO: not selecting best scores
 
     for (let i = 0; i < iteration; i++){

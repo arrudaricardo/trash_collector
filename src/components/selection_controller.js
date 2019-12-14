@@ -18,9 +18,9 @@ export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSele
         runGame();
     }
 
-
     return (
-        <div className="grid-input">
+        <div style={{display:"flex"}}className="grid-input">
+
             <Tooltip title={`size: ${gridSize}x${gridSize}`} placement="top">
                 <div className="grid-size-input">
                     Grid Size:
@@ -35,7 +35,7 @@ export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSele
 
             <Tooltip title="chance per slot" placement="top">
                 <div className="grid-change-input">
-                    Trash:
+                    Trash Chance:
             <input
                         type="number"
                         min="0"
@@ -70,7 +70,7 @@ export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSele
                         type="number"
                         min="0"
                         max="10000"
-                        step="10"
+                        step="5"
                         onChange={(e) => setIteration(e.target.value)}
                         value={iteration}
                     />
@@ -80,7 +80,7 @@ export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSele
 
             <Tooltip title="sample size" placement="top">
                 <div className="grid-change-input">
-                    Num. Iteration:
+                    Sample Size:
             <input
                         type="number"
                         min="0"
