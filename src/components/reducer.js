@@ -25,6 +25,10 @@ export default function reducer(state, action) {
             oldState.moves[name] = { ...oldState.moves[name], ...value };
             return oldState;
 
+        case "loadRobotPossibilities":
+            oldState.moves[action.name] = action.value
+            return oldState;
+
         case "resetPosibilities":
             oldState.moves[action.payload] = {}
             return oldState;

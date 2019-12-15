@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useContext} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -8,6 +8,8 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from '@material-ui/core/Tooltip';
 import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import { Pcontext } from "./game";
 
 
 const useStyles = makeStyles(theme => ({
@@ -43,9 +45,23 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Results(robots) {
-  console.log(Object.values(robots))
-
+    const { state, dispatch } = useContext(Pcontext);
     const classes = useStyles();
+
+    const addRobotPossibilities = (event, robot) => {
+      
+      //gamename: {statesum: action}
+      let result = {}
+      Object.values(robot.possibilites).forEach( pos => {
+        result[pos.stateSum] = pos.action
+      })
+        event.preventDefault()
+            dispatch({
+                type: "loadRobotPossibilities",
+                name: 'Robot',
+                value: result
+            }); 
+    }
 
 
     return (
@@ -78,7 +94,11 @@ export default function Results(robots) {
                                           {robot.currRun.trashColleted}
                                         </TableCell>
                                         <TableCell align='left' padding='none'>
-                                          <AddIcon fontSize='small'/>
+                                          <Tooltip title='load robot'>
+                                            <IconButton size='small' color="primary" component="span">
+                                              <AddIcon onClick={(e) => addRobotPossibilities(e,robot)} fontSize='small'/>
+                                            </IconButton>
+                                          </Tooltip>
                                         </TableCell>
                                     </TableRow>
                                 );

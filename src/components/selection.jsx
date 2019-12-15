@@ -12,7 +12,7 @@ const Selection = () => {
     const [sampleSize, setSampleSize] = useState(2)
     const [selectionPercetage, setSelectionPercetage] = useState(0.1)
     const [iteration, setIteration] = useState(1)
-    const [robots, setRobots] = useState(genRobots(sampleSize))
+    const [robots, setRobots] = useState(null)
 
     // current run states
     const [running, setRunning] = useState(false)
@@ -24,6 +24,7 @@ const Selection = () => {
 
     const runGame = () => {
         setGridArray(() => {
+        setRobots(genRobots(sampleSize)) // gen robots
         setRunning(true);
         return generateGridArray(gridSize, trashChange)
         })
