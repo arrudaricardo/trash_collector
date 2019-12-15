@@ -12,13 +12,14 @@ import IconButton from '@material-ui/core/IconButton';
 import { Pcontext } from "./game";
 
 
+
 const useStyles = makeStyles(theme => ({
     root: {
         width: "100%",
         overflowX: "auto"
     },
     table: {
-        // minWidth: 650,
+      maxHeight: 440,
     },
     header: {
       fontSize: '0.7em',
@@ -78,7 +79,7 @@ export default function Results(robots) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {Object.values(robots).map( (robot,i) => {
+                        {Object.values(robots).sort( (a,b) => b.currRun.score - a.currRun.score).map( (robot,i) => {
                                 return (
                                     <TableRow tabIndex={-1} key={i}>
                                         <TableCell align='center' scope="row" padding="none">
@@ -104,7 +105,7 @@ export default function Results(robots) {
                                 );
                         })}
                     </TableBody>
-                </Table>
+                  </Table>
             </Paper>
         </div>
     );
