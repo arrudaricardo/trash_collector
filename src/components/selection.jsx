@@ -9,7 +9,7 @@ import Result from './selection_results'
 
 
 const Selection = () => {
-    const [sampleSize, setSampleSize] = useState(2)
+    const [sampleSize, setSampleSize] = useState(10)
     const [selectionPercetage, setSelectionPercetage] = useState(0.1)
     const [iteration, setIteration] = useState(1)
     const [robots, setRobots] = useState(null)
