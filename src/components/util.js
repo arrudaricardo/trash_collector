@@ -381,7 +381,10 @@ export function runRobot(
     gridArray,
     robotPos,
     robot,
-    setGridArray
+    setGridArray,
+    movesMultiplier,
+    trashColletedMultiplier
+
 ) {
     // setGridArray(gridArray) // reset grid array
 
@@ -412,13 +415,13 @@ export function runRobot(
         localRobotPos = newState[1];  // update robotPos
     }
 
-    updateRobotScore(robot)
+    updateRobotScore(robot, movesMultiplier, trashColletedMultiplier)
     return robot
 }
 
 // calculate robot score
-function updateRobotScore(robot){
-    let score = (robot.currRun.moves) + (robot.currRun.trashColleted * 100)
+function updateRobotScore(robot, movesMultiplier, trashColletedMultiplier){
+    let score = (robot.currRun.moves * movesMultiplier) + (robot.currRun.trashColleted * trashColletedMultiplier)
 
     robot.currRun.score = score
     robot.metadata.scores.push(score)

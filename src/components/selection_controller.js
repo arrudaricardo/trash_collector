@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSelectionPercetage, iteration, setIteration, gridSize, setGridSize, trashChange, setTrashChange }) => {
+export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSelectionPercetage, iteration, setIteration, gridSize, setGridSize, trashChange, setTrashChange, movesMultiplier, setMovesMultiplier, trashCollectedMultiplier, setTrashCollectedMultiplier }) => {
 
     const classes = useStyles();
 
@@ -91,6 +91,31 @@ export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSele
                     />
                     %
         </div>
+            </Tooltip>
+
+            <Tooltip title="Multiplier for moves score" placement="top">
+                <div className="grid-change-input">
+                    Moves Multiplier:
+            <input
+                        type="number"
+                        step="1"
+                        onChange={(e) => setMovesMultiplier(e.target.value)}
+                        value={movesMultiplier}
+                    />
+                    
+        </div>
+            </Tooltip>
+
+            <Tooltip title="Multiplier for Trash Collected" placement="top">
+                <div className="grid-change-input">
+                Trash Multiplier:
+            <input
+                        type="number"
+                        step="1"
+                        onChange={(e) => setTrashCollectedMultiplier(e.target.value)}
+                        value={trashCollectedMultiplier}
+                    />
+            </div>
             </Tooltip>
 
             <div>
