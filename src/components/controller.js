@@ -4,10 +4,12 @@ import { Pcontext } from "./game";
 import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from "@material-ui/core/styles";
 
+
 const useStyles = makeStyles(theme => ({
     button: {
-        marginBottom: '0.5em',
+        marginBottom: '0.3em',
     },
+
 }));
 
 export default () => {
@@ -55,6 +57,8 @@ return (
             %
         </div>
         </Tooltip>
+
+
         <div>
         <Tooltip title="reset grid"placement="top">
             <Button className={classes.button} variant="contained"  color="primary" onClick={handleRestart}>

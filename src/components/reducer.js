@@ -29,6 +29,11 @@ export default function reducer(state, action) {
             oldState.moves[action.name] = action.value
             return oldState;
 
+        case "changeSpeed":
+            console.log(action)
+            oldState.grid.speed = action.value 
+            return oldState;
+
         case "resetPosibilities":
             oldState.moves[action.payload] = {}
             return oldState;

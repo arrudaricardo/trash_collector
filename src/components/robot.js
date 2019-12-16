@@ -7,6 +7,10 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { Pcontext } from "./game";
 import Tooltip from "@material-ui/core/Tooltip";
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles(theme => ({
     button: {
@@ -16,7 +20,12 @@ const useStyles = makeStyles(theme => ({
         marginLeft: theme.spacing(0),
         marginRight: theme.spacing(1),
         width: 40
-    }
+    },
+    formControl: {
+        margin: theme.spacing(1),
+       top: '0.55em',
+        minWidth: 90,
+    },
 }));
 
 export default function Robot() {
@@ -195,7 +204,7 @@ export default function Robot() {
     useEffect(() => {
         let game = setTimeout(() => {
         setGridState( checkRobotState(state.grid.gridArray, state.grid.robotPos));
-        }, 1000)
+        }, state.grid.speed)
         if (running === 'false') {clearTimeout(game)}
     }, [state.grid.gridArray, state.grid.moves, running]);
 
@@ -297,6 +306,21 @@ export default function Robot() {
                     }}
                     margin="normal"
                 />
+
+                <Tooltip title="Robot Speed"placement="top">
+                    <FormControl className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-label">Speed</InputLabel>
+                    <Select
+                    labelId="robot speed"
+                    value={state.grid.speed}
+                    onChange={(event) => dispatch({type:'changeSpeed', value: event.target.value})}
+                    >
+                    <MenuItem value={1000}>slow</MenuItem>
+                    <MenuItem value={500}>medium</MenuItem>
+                    <MenuItem value={100}>fast</MenuItem>
+                    </Select>
+                    </FormControl>
+                </Tooltip>
 
                 <SwitchMode setMode={setMode} mode={mode} />
                 {mode === "dev" && <div>StateId: {gridState.stateSum} </div>}
