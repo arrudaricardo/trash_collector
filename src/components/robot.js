@@ -246,7 +246,7 @@ export default function Robot() {
             // add to results
             dispatch({ type: "addResult", result: newResult });
 
-            setRunTimes(prev => prev - 1);
+            setRunTimes(prev => prev === 1? prev: prev -1 )
             dispatch({ type: "resetGridArray" });
         }
 
@@ -266,7 +266,7 @@ export default function Robot() {
             dispatch({ type: "setGameOver", payload: true });
             setRunning(false);
             dispatch({ type: "addResult", result: newResult });
-            setRunTimes(prev => prev - 1);
+            setRunTimes(prev => prev === 1? prev: prev -1 )
             dispatch({ type: "resetGridArray" });
         }
     }

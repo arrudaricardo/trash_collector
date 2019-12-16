@@ -19,7 +19,7 @@ const initialState = {
     moves: { default: {} },
     results: [],
     grid: {
-        speed: 1000,
+        speed: 500,
         gameName: "default",
         gridArray,
         robotPos,
