@@ -431,6 +431,10 @@ function updateRobotScore(robot, movesMultiplier, trashColletedMultiplier){
 
     robot.currRun.score = score
     robot.metadata.scores.push(score)
+
+    // update average scores
+    let averageScore = robot.metadata.scores.reduce((acc, val) => { return acc + val / robot.metadata.scores.length }, 0)
+    robot.metadata.averageScore = averageScore
     return robot
 
 }

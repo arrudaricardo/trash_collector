@@ -121,9 +121,7 @@ function selectRobotsByScore(robots, seletionPercetage) {
 
         for (let robot of robots) {
 
-        // update average scores
-        let averageScore = robot.metadata.scores.reduce((acc, val) => { return acc + val / robot.metadata.scores.length }, 0)
-        robot.metadata.averageScore = averageScore;
+;
 
         // add top robots
         if (selectedRobots.length < selectionNumber){
