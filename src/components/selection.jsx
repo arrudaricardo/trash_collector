@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { genRobots, generateGridArray, checkPos, runRobot } from './util'
+import { genRobots, generateGridArray, runRobot } from './util'
 import Grid from './display_run'
 import Controller from './selection_controller'
 import Result from './selection_results'
@@ -10,7 +10,7 @@ import Result from './selection_results'
 
 const Selection = () => {
     const [sampleSize, setSampleSize] = useState(10)
-    const [selectionPercetage, setSelectionPercetage] = useState(0.1)
+    const [selectionPercetage, setSelectionPercetage] = useState(30)
     const [iteration, setIteration] = useState(1)
     const [robots, setRobots] = useState(null)
     const [movesMultiplier, setMovesMultiplier] = useState(1)
@@ -26,7 +26,7 @@ const Selection = () => {
 
     const runGame = () => {
         setGridArray(() => {
-            setRobots(genRobots(sampleSize)) // gen robots
+            setRobots(genRobots(sampleSize)); // gen robots
             setRunning(true);
             return generateGridArray(gridSize, trashChange)
         })
@@ -34,9 +34,17 @@ const Selection = () => {
     }
 
     useEffect(() => {
+        // run robots iteration
         if (running) {
-            console.log(gridArray)
-            robotIteration(robots, gridArray[0], gridArray[1], setGridArray, iteration, selectionPercetage, gridSize, trashChange, movesMultiplier, trashCollectedMultiplier)
+            let runRobots = [...robots]
+
+            // run N iteration for initial robot array
+            for (let i = 0; i < iteration; i++) {
+                let selectedRobots = robotIteration(robots, gridArray[0], gridArray[1], setGridArray, selectionPercetage, movesMultiplier, trashCollectedMultiplier)
+                setRobots(selectedRobots)
+            }
+
+            // setRobots(runRobot)
             setRunning(false)
         }
     }, [gridArray])
@@ -68,23 +76,28 @@ const Selection = () => {
 }
 
 
-function robotIteration(robots, gridArray, robotPos, setGridArray, iteration, selectionPercetage, setRobotPos, gridSize, trashChange, movesMultiplier, trashCollectedMultiplier) {
-    // TODO: not selecting best scores
+function robotIteration(robots, gridArray, robotPos, setGridArray, selectionPercetage, setRobotPos,  movesMultiplier, trashCollectedMultiplier) {
 
-    for (let i = 0; i < iteration; i++) {
-        let newrobots = robotSampleRun(gridArray, robotPos, robots, setGridArray, setRobotPos, movesMultiplier, trashCollectedMultiplier)
-        robots = selectRobotsByScore(newrobots, selectionPercetage)
-    }
-    return robots
+        // for each robot in robots run in the gridArray and return the score
+        let newRobots = robotSampleRun(gridArray, robotPos, robots, setGridArray, setRobotPos, movesMultiplier, trashCollectedMultiplier)
+
+        // select the top robots from the  Robots array
+
+        // robots = selectRobotsByScore(newrobots, selectionPercetage)
+    
+
+    return newRobots
 }
 
 function robotSampleRun(gridArray, robotPos, robots, setGridArray, setRobotPos, movesMultiplier, trashCollectedMultiplier) {
     let newRobots = []
-    let currentGridArray = gridArray
-    let currentRobotPos = robotPos
+    let currentRobotPos = [...robotPos]
 
     for (let robot of robots) {
-        let newRobot = runRobot(currentGridArray, currentRobotPos, robot, setGridArray, setRobotPos, movesMultiplier, trashCollectedMultiplier)
+    const currentGridArray = JSON.parse(JSON.stringify(gridArray))
+    let newRobot = runRobot(currentGridArray, currentRobotPos, robot, setGridArray, setRobotPos, movesMultiplier, trashCollectedMultiplier)
+
+    //    console.log(robot.currRun.score)
         newRobots.push(newRobot)
     }
     return newRobots
@@ -92,41 +105,30 @@ function robotSampleRun(gridArray, robotPos, robots, setGridArray, setRobotPos, 
 
 function selectRobotsByScore(robots, seletionPercetage) {
     let selectedRobots = []
-    let selectionNumber = Math.floor(seletionPercetage * robots.length)
+    let robotsSize = robots.length
+    let selectionNumber = Math.ceil((seletionPercetage / 100) * robotsSize)
 
     //sort by score
     robots.sort((a, b) => a.metadata.currRun - b.metadata.currRun)
 
-    while (selectedRobots.length <= selectionNumber) {
         for (let robot of robots) {
-            // let lastScore = robot.currRun.score
-            let averageScore = robot.metadata.scores.reduce((acc, val) => { return acc + val / robot.metadata.scores.length }, 0)
-            robot.metadata.averageScore = averageScore;
 
-            if (Math.random() > seletionPercetage) {
-                selectedRobots.push(robot)
-            } else {
-                selectedRobots.push(robots[Math.floor(Math.random() * robots.length)])
-            }
+        // update average scores
+        let averageScore = robot.metadata.scores.reduce((acc, val) => { return acc + val / robot.metadata.scores.length }, 0)
+        robot.metadata.averageScore = averageScore;
 
+        // add top robots
+        if (selectedRobots.length < selectionNumber){
+            selectedRobots.push(robot)
         }
-
     }
 
-    return selectedRobots
+    // fill with next random robots
+    let deltaRobotsSize = robotsSize - selectedRobots.length 
+    let newRobots = genRobots(deltaRobotsSize)
+
+    return [...selectedRobots, ...newRobots]
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 export default Selection

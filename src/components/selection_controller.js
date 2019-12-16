@@ -19,7 +19,7 @@ export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSele
     }
 
     return (
-        <div style={{display:"flex"}}className="grid-input">
+        <div style={{display:"flex", flexWrap: 'wrap', justifyContent: 'space-evenly'}} className="grid-input">
 
             <Tooltip title={`size: ${gridSize}x${gridSize}`} placement="top">
                 <div className="grid-size-input">
@@ -50,7 +50,7 @@ export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSele
 
             <Tooltip title="selection percentage" placement="top">
                 <div className="grid-change-input">
-                    Selection %:
+                    Selection :
             <input
                         type="number"
                         min="0"
@@ -68,7 +68,7 @@ export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSele
                     Num. Iteration:
             <input
                         type="number"
-                        min="0"
+                        min="1"
                         max="10000"
                         step="5"
                         onChange={(e) => setIteration(e.target.value)}
@@ -83,7 +83,7 @@ export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSele
                     Sample Size:
             <input
                         type="number"
-                        min="0"
+                        min="1"
                         max="10000"
                         step="10"
                         onChange={(e) => setSampleSize(e.target.value)}

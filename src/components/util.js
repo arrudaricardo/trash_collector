@@ -393,7 +393,7 @@ export function runRobot(
     robot.currRun.score = 0;
 
     let checkInfinitLoop = infinitLoop()
-    let localGridArray =  gridArray
+    let localGridArray = gridArray
     let localRobotPos =  robotPos  //initial robotPos
 
     while (!gameOver(localGridArray) && !checkInfinitLoop(localGridArray)) {
