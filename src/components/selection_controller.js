@@ -69,8 +69,7 @@ export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSele
             <input
                         type="number"
                         min="1"
-                        max="10000"
-                        step="5"
+                        step="1"
                         onChange={(e) => setIteration(e.target.value)}
                         value={iteration}
                     />
@@ -84,8 +83,7 @@ export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSele
             <input
                         type="number"
                         min="1"
-                        max="10000"
-                        step="10"
+                        step="1"
                         onChange={(e) => setSampleSize(e.target.value)}
                         value={sampleSize}
                     />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import SwitchMode from "./switch_mode";
-import { checkRobotState } from "./util";
+import { checkRobotState, infinitLoop} from "./util";
 import RobotStateDisplay from "./robot_state_display";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -24,17 +24,9 @@ export default function Robot() {
     const { state, dispatch } = useContext(Pcontext);
     const [running, setRunning] = useState(false);
     const [mode, setMode] = useState("normal"); //dev or normal
-    const [gridState, setGridState] = useState(
-        checkRobotState(state.grid.gridArray, state.grid.robotPos)
-    );
+    const [gridState, setGridState] = useState(null)
     const [runTimes, setRunTimes] = useState(1);
 
-    //update current gridState
-    useEffect(() => {
-        setGridState(
-            checkRobotState(state.grid.gridArray, state.grid.robotPos)
-        );
-    }, [state.grid.gridArray, state.grid.robotPos, state.grid.moves]);
 
     function inputHandle(move) {
         let nextPos;
@@ -199,15 +191,22 @@ export default function Robot() {
         }
     }
 
+    //update current gridState
+    useEffect(() => {
+        let game = setTimeout(() => {
+        setGridState( checkRobotState(state.grid.gridArray, state.grid.robotPos));
+        }, 1000)
+        if (running === 'false') {clearTimeout(game)}
+    }, [state.grid.gridArray, state.grid.moves, running]);
+
     useEffect(() => {
         checkGameOver();
         if (running && !state.grid.gameOver) {
             inputHandle(getNextMove());
         } else if (runTimes > 1) {
             setRunning(prev => !prev);
-        } else if (runTimes === -1) {
-        }
-    }, [running, gridState]);
+        } 
+        }, [gridState]);
 
     useEffect(() => {
         if (runTimes > 1 && state.grid.gameOver) {

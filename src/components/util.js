@@ -443,7 +443,7 @@ function gameOver(gridArray) {
     return !gridArray.some(arr => arr.some(e => e[1] === true));
 }
 
-function infinitLoop() {
+export function infinitLoop() {
     // if gridArray and robotPos same as before
     let passedState = {};  // {robotPos{trashSum}}
 
