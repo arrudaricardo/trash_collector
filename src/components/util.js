@@ -458,7 +458,6 @@ function infinitLoop() {
             }else {
                 passedState[robotBoxNum].push(currentStateSum)
             }
-
         }
         return false
     };

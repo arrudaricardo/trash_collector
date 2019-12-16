@@ -40,11 +40,13 @@ const Selection = () => {
 
             // run N iteration for initial robot array
             for (let i = 0; i < iteration; i++) {
-                let selectedRobots = robotIteration(robots, gridArray[0], gridArray[1], setGridArray, selectionPercetage, movesMultiplier, trashCollectedMultiplier)
-                setRobots(selectedRobots)
+                let selectedRobots = robotIteration(runRobots, gridArray[0], gridArray[1], setGridArray, selectionPercetage, movesMultiplier, trashCollectedMultiplier)
+                runRobots = selectedRobots
             }
 
-            // setRobots(runRobot)
+            setRobots(runRobots)
+
+
             setRunning(false)
         }
     }, [gridArray])
@@ -75,7 +77,6 @@ const Selection = () => {
     </div>)
 }
 
-
 function robotIteration(robots, gridArray, robotPos, setGridArray, selectionPercetage,  movesMultiplier, trashCollectedMultiplier) {
 
         // for each robot in robots run in the gridArray and return the score
@@ -83,10 +84,16 @@ function robotIteration(robots, gridArray, robotPos, setGridArray, selectionPerc
 
         // select the top robots from the  Robots array
 
-        // robots = selectRobotsByScore(newrobots, selectionPercetage)
+        let robotsSelectedByScore = selectRobotsByScore(newRobots, selectionPercetage)
+
+        // fill with next random robots and run to get it score
+        let deltaRobotsSize = newRobots.length - robotsSelectedByScore.length 
+        let newFillRobots = genRobots(deltaRobotsSize)
+        console.log({deltaRobotsSize}, {newFillRobots}, {robotsSelectedByScore})
+        let newFillRobotsRunned = robotSampleRun(gridArray, robotPos, newFillRobots, setGridArray, movesMultiplier, trashCollectedMultiplier)
     
 
-    return newRobots
+    return [...robotsSelectedByScore, ...newFillRobotsRunned]
 }
 
 function robotSampleRun(gridArray, robotPos, robots, setGridArray, movesMultiplier, trashCollectedMultiplier) {
@@ -109,7 +116,8 @@ function selectRobotsByScore(robots, seletionPercetage) {
     let selectionNumber = Math.ceil((seletionPercetage / 100) * robotsSize)
 
     //sort by score
-    robots.sort((a, b) => a.metadata.currRun - b.metadata.currRun)
+
+    robots.sort((a, b) => b.currRun.score - a.currRun.score) // sort desc by currRun Score
 
         for (let robot of robots) {
 
@@ -122,12 +130,8 @@ function selectRobotsByScore(robots, seletionPercetage) {
             selectedRobots.push(robot)
         }
     }
-
-    // fill with next random robots
-    let deltaRobotsSize = robotsSize - selectedRobots.length 
-    let newRobots = genRobots(deltaRobotsSize)
-
-    return [...selectedRobots, ...newRobots]
+    console.log({selectedRobots})
+    return selectedRobots
 }
 
 
