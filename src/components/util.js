@@ -357,6 +357,7 @@ function updateRobotPos(
             prevGridArray[oldPos[0]][oldPos[1]][2] = false;
             prevGridArray[newPos[0]][newPos[1]][2] = true;
 
+
             //add new track for past position
             prevGridArray[newPos[0]][newPos[1]][3] = true;
         }
@@ -413,9 +414,14 @@ export function runRobot(
 
         localGridArray = newState[0]; // update gridArray
         localRobotPos = newState[1];  // update robotPos
+
+        setGridArray( [localGridArray, localRobotPos] ) // update react robot array 
+        
     }
 
     updateRobotScore(robot, movesMultiplier, trashColletedMultiplier)
+
+
     return robot
 }
 

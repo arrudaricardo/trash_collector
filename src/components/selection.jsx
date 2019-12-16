@@ -76,10 +76,10 @@ const Selection = () => {
 }
 
 
-function robotIteration(robots, gridArray, robotPos, setGridArray, selectionPercetage, setRobotPos,  movesMultiplier, trashCollectedMultiplier) {
+function robotIteration(robots, gridArray, robotPos, setGridArray, selectionPercetage,  movesMultiplier, trashCollectedMultiplier) {
 
         // for each robot in robots run in the gridArray and return the score
-        let newRobots = robotSampleRun(gridArray, robotPos, robots, setGridArray, setRobotPos, movesMultiplier, trashCollectedMultiplier)
+        let newRobots = robotSampleRun(gridArray, robotPos, robots, setGridArray, movesMultiplier, trashCollectedMultiplier)
 
         // select the top robots from the  Robots array
 
@@ -89,13 +89,13 @@ function robotIteration(robots, gridArray, robotPos, setGridArray, selectionPerc
     return newRobots
 }
 
-function robotSampleRun(gridArray, robotPos, robots, setGridArray, setRobotPos, movesMultiplier, trashCollectedMultiplier) {
+function robotSampleRun(gridArray, robotPos, robots, setGridArray, movesMultiplier, trashCollectedMultiplier) {
     let newRobots = []
     let currentRobotPos = [...robotPos]
 
     for (let robot of robots) {
     const currentGridArray = JSON.parse(JSON.stringify(gridArray))
-    let newRobot = runRobot(currentGridArray, currentRobotPos, robot, setGridArray, setRobotPos, movesMultiplier, trashCollectedMultiplier)
+       let newRobot = runRobot(currentGridArray, currentRobotPos, robot, setGridArray, movesMultiplier, trashCollectedMultiplier)
 
     //    console.log(robot.currRun.score)
         newRobots.push(newRobot)

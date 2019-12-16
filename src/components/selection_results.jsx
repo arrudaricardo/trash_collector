@@ -10,7 +10,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import { Pcontext } from "./game";
-
+import TableContainer from '@material-ui/core/TableContainer';
 
 
 const useStyles = makeStyles(theme => ({
@@ -42,6 +42,9 @@ const useStyles = makeStyles(theme => ({
     },
     button: {
         display: "flex"
+    },
+    container: {
+      maxHeight: 400
     }
 }));
 
@@ -68,6 +71,7 @@ export default function Results(robots) {
     return (
         <div>
             <Paper className={classes.root}>
+              <TableContainer className={classes.container}>
                 <Table size='small' className={classes.table} aria-label="simple table">
                     <TableHead className={classes.header}>
                         <TableRow>
@@ -106,6 +110,7 @@ export default function Results(robots) {
                         })}
                     </TableBody>
                   </Table>
+                </TableContainer>
             </Paper>
         </div>
     );
