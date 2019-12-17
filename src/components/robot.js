@@ -229,12 +229,8 @@ export default function Robot() {
             arr.some(e => e[1] === true)
         );
         if (isOver && !state.grid.gameOver) {
-            let score = Number(
-                (state.grid.moves / state.grid.trashColleted).toFixed(3)
-            );
             let newResult = {
                 gameName: state.grid.gameName,
-                score,
                 moves: state.grid.moves,
                 trashsCollected: state.grid.trashColleted,
                 gridSize: state.grid.gridSize,
@@ -252,12 +248,8 @@ export default function Robot() {
 
         // if running to much times
         if (state.grid.moves > state.grid.gridSize ** 4) {
-            let score = (state.grid.moves / state.grid.trashColleted).toFixed(
-                1
-            ); // 100 is perfect score
             let newResult = {
                 gameName: state.grid.gameName,
-                score,
                 moves: state.grid.moves,
                 trashsCollected: state.grid.trashColleted,
                 gridSize: state.grid.gridSize,

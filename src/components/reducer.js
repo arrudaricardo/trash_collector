@@ -30,8 +30,15 @@ export default function reducer(state, action) {
             return oldState;
 
         case "changeSpeed":
-            console.log(action)
             oldState.grid.speed = action.value 
+            return oldState;
+
+        case "changeTrashMultiplier":
+            oldState.grid.trashMultiplier = action.value 
+            return oldState;
+
+        case "changeMovesMultiplier":
+            oldState.grid.movesMultiplier = action.value 
             return oldState;
 
         case "resetPosibilities":

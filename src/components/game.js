@@ -19,6 +19,8 @@ const initialState = {
     moves: { default: {} },
     results: [],
     grid: {
+        movesMultiplier: 1,
+        trashMultiplier: 10,
         speed: 500,
         gameName: "default",
         gridArray,

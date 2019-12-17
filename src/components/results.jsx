@@ -35,6 +35,11 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(1),
         minWidth: 120
     },
+    input: {
+        display: 'flex',
+        margin: theme.spacing(1),
+
+    },
     delete: {
         margin: theme.spacing(1)
     },
@@ -56,6 +61,10 @@ export default function Results() {
 
     const classes = useStyles();
 
+    function getScore(moves, trashCollected) {
+        return ((moves * state.grid.movesMultiplier) + (trashCollected * state.grid.trashMultiplier) )
+    }
+
     useEffect(() => {
         if (state.results.length > 0) {
             let sum = {
@@ -66,7 +75,7 @@ export default function Results() {
             };
             state.results.forEach(e => {
                 if (e.gameName === selectName || selectName === "all") {
-                    sum.score += e.score === "fail" ? 0 : e.score;
+                    sum.score += e.score === "fail" ? 0 : getScore(e.moves, e.trashsCollected)
                     sum.moves += e.moves;
                     sum.trash += e.trashsCollected;
                     sum.gridSize += e.gridSize;
@@ -76,12 +85,12 @@ export default function Results() {
                 selectName === "all"
                     ? state.results.length
                     : state.results.reduce((acc, val) => {
-                          if (val.gameName === selectName) {
-                              return acc + 1;
-                          } else {
-                              return acc;
-                          }
-                      }, 0);
+                        if (val.gameName === selectName) {
+                            return acc + 1;
+                        } else {
+                            return acc;
+                        }
+                    }, 0);
 
             Object.keys(sum).forEach(key => {
                 let result = sum[key] / itemsNum;
@@ -90,7 +99,7 @@ export default function Results() {
 
             setMedian(sum);
         }
-    }, [state.results, selectName]);
+    }, [state.results, selectName, state.grid.trashMultiplier, state.grid.movesMultiplier]);
 
     const handleChangeName = event => {
         setSelectName(event.target.value);
@@ -115,28 +124,56 @@ export default function Results() {
                         value={selectName}
                         onChange={handleChangeName}
                     >
-                        {[...new Set(state.results.map(el => el.gameName))].map( gameName =>
+                        {[...new Set(state.results.map(el => el.gameName))].map(gameName =>
                             <MenuItem key={gameName} value={gameName}>{gameName}</MenuItem>
                         )}
 
                         <MenuItem value="all">All</MenuItem>
                     </Select>
                 </FormControl>
-                    <IconButton
-                        onClick={deleteGameResult}
-                        className={classes.delete}
-                        aria-label="delete"
-                    >
-                        <Tooltip title={`delete ${selectName} results`}>
-                            <DeleteIcon />
-                        </Tooltip>
-                    </IconButton>
+
+                <Tooltip title="Multiplier for moves score" placement="top">
+                    <div className={classes.input}>
+                    <InputLabel id="label">Moves Multiplier:</InputLabel>
+                    <input
+                            type="number"
+                            min="0"
+                            step="1"
+                            onChange={(e) => dispatch({type:"changeMovesMultiplier", value: e.target.value})}
+                            value={state.grid.movesMultiplier}
+                        />
+
+                    </div>
+                </Tooltip>
+
+                <Tooltip title="Multiplier for Trash Collected" placement="top">
+                    <div className={classes.input}>
+                    <InputLabel id="label">Trash Multiplier:</InputLabel>
+                    <input
+                            type="number"
+                            min="0"
+                            step="1"
+                            onChange={(e) => dispatch({type:"changeTrashMultiplier", value: e.target.value})}
+                            value={state.grid.trashMultiplier}
+                        />
+                    </div>
+                </Tooltip>
+
+                <IconButton
+                    onClick={deleteGameResult}
+                    className={classes.delete}
+                    aria-label="delete"
+                >
+                    <Tooltip title={`delete ${selectName} results`}>
+                        <DeleteIcon />
+                    </Tooltip>
+                </IconButton>
             </div>
             <Paper className={classes.root}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead className={classes.header}>
                         <TableRow>
-                            <TableCell> Run Name </TableCell>
+                            <TableCell> Runned Name </TableCell>
                             <TableCell align="right">Score</TableCell>
                             <TableCell align="right">Robot Moves</TableCell>
                             <TableCell align="right">Trash Collected</TableCell>
@@ -144,7 +181,7 @@ export default function Results() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {state.results.map( (row,i) => {
+                        {state.results.map((row, i) => {
                             if (
                                 selectName === row.gameName ||
                                 selectName === "all"
@@ -155,7 +192,7 @@ export default function Results() {
                                             {row.gameName}
                                         </TableCell>
                                         <TableCell align="right">
-                                            {row.fail ? "fail" : row.score}
+                                            {row.fail ? "fail" : getScore(row.moves, row.trashsCollected)}
                                         </TableCell>
                                         <TableCell align="right">
                                             {row.moves}
