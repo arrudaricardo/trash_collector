@@ -1,5 +1,5 @@
 import React from "react";
-import Robot from "./robot.js";
+import Robot from "./robot";
 import Controller from "./controller";
 import GridArray from "./grid_array";
 

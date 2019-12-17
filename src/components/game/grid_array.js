@@ -1,6 +1,6 @@
 import React,{useContext} from 'react';
 import Box from './box'
-import { Pcontext } from "./game";
+import { Pcontext } from "../game";
 
 export default () => {
     const {state } = useContext(Pcontext)

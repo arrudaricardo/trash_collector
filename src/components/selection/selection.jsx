@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { genRobots, generateGridArray, runRobot } from './util'
+import { genRobots, generateGridArray, runRobot } from '../util'
 import Grid from './display_run'
 import Controller from './selection_controller'
 import Result from './selection_results'

@@ -1,6 +1,6 @@
 import React,{useContext} from 'react';
 import Button from '@material-ui/core/Button';
-import { Pcontext } from "./game";
+import { Pcontext } from "../game";
 import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from "@material-ui/core/styles";
 

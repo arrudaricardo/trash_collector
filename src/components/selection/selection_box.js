@@ -1,8 +1,7 @@
 import React from "react";
 
-import trashImg from "../static/img/trash.png";
-import robotImg from "../static/img/robot.png";
-import { red } from "ansi-colors";
+import trashImg from "../../static/img/trash.png";
+import robotImg from "../../static/img/robot.png";
 
 export default function Box({
     id,

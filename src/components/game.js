@@ -2,13 +2,13 @@ import React, { createContext, useReducer, useEffect } from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import { Route } from "react-router-dom";
-import Grid from "./grid";
-import PosGrid from "./posibilities_grid";
+import Grid from "./game/grid";
+import PosGrid from "./possibilities/posibilities_grid";
 import NavBar from "./nav_bar";
 import reducer from "./reducer";
-import Results from "./results";
+import Results from "./results/results";
 import { generateGridArray } from "./util";
-import Selection from "./selection";
+import Selection from "./selection/selection";
 
 export const Pcontext = createContext(null);
 

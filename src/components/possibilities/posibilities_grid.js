@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
-import Box from "./box";
+import Box from "../game/box"
 import Pbutton from "./posibilities_button";
-import { Pcontext } from "./game";
-import { stateValues } from "./util";
+import { Pcontext } from "../game";
+import { stateValues } from "../util";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";

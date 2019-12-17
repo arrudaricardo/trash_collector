@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Grid from "@material-ui/core/Grid";
-import { Pcontext } from "./game";
+import { Pcontext } from "../game";
 import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles(theme => ({
