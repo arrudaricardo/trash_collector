@@ -14,6 +14,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -122,6 +123,7 @@ export default function Results() {
                     <Select
                         id="select-name"
                         value={selectName}
+                            margin="dense"
                         onChange={handleChangeName}
                     >
                         {[...new Set(state.results.map(el => el.gameName))].map(gameName =>
@@ -133,30 +135,32 @@ export default function Results() {
                 </FormControl>
 
                 <Tooltip title="Multiplier for moves score" placement="top">
-                    <div className={classes.input}>
-                    <InputLabel id="label">Moves Multiplier:</InputLabel>
-                    <input
+                    <TextField
+                            id="filled-number"
+                            label="Moves Multiplier"
                             type="number"
+                            margin="dense"
                             min="0"
                             step="1"
                             onChange={(e) => dispatch({type:"changeMovesMultiplier", value: e.target.value})}
                             value={state.grid.movesMultiplier}
-                        />
-
-                    </div>
+                            />
                 </Tooltip>
 
                 <Tooltip title="Multiplier for Trash Collected" placement="top">
-                    <div className={classes.input}>
-                    <InputLabel id="label">Trash Multiplier:</InputLabel>
-                    <input
+                    <TextField
+                            id="filled-number"
+                            label="Trash Multiplier"
                             type="number"
+                            margin="dense"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                             min="0"
                             step="1"
                             onChange={(e) => dispatch({type:"changeTrashMultiplier", value: e.target.value})}
                             value={state.grid.trashMultiplier}
-                        />
-                    </div>
+                            />
                 </Tooltip>
 
                 <IconButton

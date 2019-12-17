@@ -2,6 +2,7 @@ import React,{useContext} from 'react';
 import Button from '@material-ui/core/Button';
 import { Pcontext } from "../game";
 import Tooltip from '@material-ui/core/Tooltip';
+import TextField from '@material-ui/core/TextField';
 import { makeStyles } from "@material-ui/core/styles";
 
 
@@ -9,6 +10,17 @@ const useStyles = makeStyles(theme => ({
     button: {
         marginBottom: '0.3em',
     },
+    input: {
+        display: 'flex',
+        alignItems: "center",
+        margin: theme.spacing(2),
+        maxWidth: '30em',
+    },
+    textField: {
+        marginLeft: '0.8em',
+        marginRight: '0.8em',
+
+    }
 
 }));
 
@@ -30,33 +42,34 @@ export default () => {
     }
 
 return (
-    <div className="grid-input">
+    <div className={classes.input}>
+
         <Tooltip title={`size: ${state.grid.gridSize}x${state.grid.gridSize}`}placement="top">
-        <div className="grid-size-input">
-            Grid Size:
-            <input
-                type="number"
-                min="1"
-                onChange={handleGridChange}
-                value={state.grid.gridSize}
-            />
-        </div>
+            <TextField
+                    className={classes.textField}
+                    label="Grid Size"
+                    type="number"
+                    margin="dense"
+                    min="1"
+                    step="1"
+                    onChange={handleGridChange}
+                    value={state.grid.gridSize}
+                    />
         </Tooltip>
 
         <Tooltip title="chance per slot"placement="top">
-        <div className="grid-change-input">
-            Trash:
-            <input
-                type="number"
-                min="0"
-                max="100"
-                step="5"
-                onChange={handleChanceChange}
-                value={state.grid.chanceOfTrash}
-            />
-            %
-        </div>
-        </Tooltip>
+            <TextField
+                    label="Trash Chance %"
+                    type="number"
+                    size='small'
+                    margin="dense"
+                    min="0"
+                    max="100"
+                    step="5"
+                    onChange={handleChanceChange}
+                    value={state.grid.chanceOfTrash}
+                    />
+            </Tooltip>
 
 
         <div>
