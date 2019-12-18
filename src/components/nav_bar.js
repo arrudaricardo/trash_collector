@@ -65,7 +65,7 @@ export default () => {
                         Selection
                     </NavLink>
                 </Breadcrumbs>
-                    <IconButton onClick={() => window.open('https://www.google.com', '_blank')}size="small" className={classes.github}>
+                    <IconButton onClick={() => window.open('https://github.com/arrudaricardo/trash_collector', '_blank')}size="small" className={classes.github}>
                         <GitHubIcon color="action"/>
                     </IconButton>
             </Paper>
