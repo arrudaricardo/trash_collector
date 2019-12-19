@@ -4,7 +4,6 @@ import Grid from './display_run'
 import Controller from './selection_controller'
 import Result from './selection_results'
 
-//TODO: get x random sample test and weight by score (hight score higher chance to be selected) and select y percentage and fill with random z times 
 //Number of states (2 * 3**4 ) = 162 - 25 =  (137 possible states)
 
 
@@ -21,7 +20,6 @@ const Selection = () => {
     const [gridSize, setGridSize] = useState(5)
     const [trashChange, setTrashChange] = useState(10)
     const [gridArray, setGridArray] = useState(null)
-
 
 
     const runGame = () => {
@@ -71,7 +69,7 @@ const Selection = () => {
         {(gridArray !== null) &&
             <div style={{ display: 'flex', padding: '0.1em' }} >
                 <Grid gridArray={gridArray[0]} />
-                <Result {...robots} />
+                <Result robots={robots} gridArray={gridArray} />
             </div>
         }
     </div>)

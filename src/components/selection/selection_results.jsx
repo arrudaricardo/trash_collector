@@ -44,11 +44,11 @@ const useStyles = makeStyles(theme => ({
         display: "flex"
     },
     container: {
-      maxHeight: 400
+      // maxHeight: 400
     }
 }));
 
-export default function Results(robots) {
+export default function Results({robots, gridArray}) {
     const { state, dispatch } = useContext(Pcontext);
     const classes = useStyles();
 
@@ -71,7 +71,7 @@ export default function Results(robots) {
     return (
         <div>
             <Paper className={classes.root}>
-              <TableContainer className={classes.container}>
+              <TableContainer style={{maxHeight: `${gridArray[0].length * 80}px`}} className={classes.container}>
                 <Table size='small' className={classes.table} aria-label="simple table">
                     <TableHead className={classes.header}>
                         <TableRow>
