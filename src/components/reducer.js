@@ -104,7 +104,7 @@ export default function reducer(state, action) {
             if (action.payload === 'all') {
                 oldState.results = [] 
             } else {
-                oldState.results = oldState.results.filter( e => e.gameName != action.payload)
+                oldState.results = oldState.results.filter( e => e.gameName !== action.payload)
             }
         return oldState
 

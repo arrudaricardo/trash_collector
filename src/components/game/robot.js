@@ -314,8 +314,9 @@ export default function Robot() {
                     </FormControl>
                 </Tooltip>
 
-                <SwitchMode setMode={setMode} mode={mode} />
-                {mode === "dev" && <div>StateId: {gridState.stateSum} </div>}
+                {/* <SwitchMode setMode={setMode} mode={mode} />
+                {mode === "dev" && <div>StateId: {gridState.stateSum} </div>} */}
+
             </div>
             <div className="robot-information">
                 <div className="trashColleted">

@@ -5,7 +5,6 @@ import Switch from '@material-ui/core/Switch';
 export default ({mode, setMode}) => (
 <div>
      <FormControlLabel
-     style={{marginrop:'1em', marginRight: '5em', maxWidth: '2em'}}
         control={
           <Switch
             checked={mode === 'dev'}

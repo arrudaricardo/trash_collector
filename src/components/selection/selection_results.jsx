@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Results({robots, gridArray}) {
-    const { state, dispatch } = useContext(Pcontext);
+    const { _ , dispatch } = useContext(Pcontext);
     const classes = useStyles();
 
     const addRobotPossibilities = (event, robot) => {

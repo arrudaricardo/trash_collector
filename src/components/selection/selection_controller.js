@@ -1,16 +1,36 @@
-import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
+import React from "react";
+import Button from "@material-ui/core/Button";
+import Tooltip from "@material-ui/core/Tooltip";
+import Switch from "@material-ui/core/Switch";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
     button: {
-        marginBottom: '0.5em',
+        marginBottom: "0.5em"
     }
 }));
 
-export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSelectionPercetage, iteration, setIteration, gridSize, setGridSize, trashChange, setTrashChange, movesMultiplier, setMovesMultiplier, trashCollectedMultiplier, setTrashCollectedMultiplier }) => {
-
+export default ({
+    runGame,
+    sampleSize,
+    setSampleSize,
+    selectionPercetage,
+    setSelectionPercetage,
+    iteration,
+    setIteration,
+    gridSize,
+    setGridSize,
+    trashChange,
+    setTrashChange,
+    movesMultiplier,
+    setMovesMultiplier,
+    trashCollectedMultiplier,
+    setTrashCollectedMultiplier,
+    displayGrid,
+    setDisplayGrid
+}) => {
     const classes = useStyles();
 
     function handleRun(event) {
@@ -19,15 +39,20 @@ export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSele
     }
 
     return (
-        <div style={{display:"flex", flexWrap: 'wrap', justifyContent: 'space-evenly'}} className="grid-input">
-
+        <div
+            style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-evenly"
+            }}
+            className="grid-input">
             <Tooltip title={`size: ${gridSize}x${gridSize}`} placement="top">
                 <div className="grid-size-input">
                     Grid Size:
-            <input
+                    <input
                         type="number"
                         min="1"
-                        onChange={(e) => setGridSize(e.target.value)}
+                        onChange={e => setGridSize(e.target.value)}
                         value={gridSize}
                     />
                 </div>
@@ -36,89 +61,103 @@ export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSele
             <Tooltip title="chance per slot" placement="top">
                 <div className="grid-change-input">
                     Trash Chance:
-            <input
+                    <input
                         type="number"
                         min="0"
                         max="100"
                         step="5"
-                        onChange={(e) => setTrashChange(e.target.value)}
+                        onChange={e => setTrashChange(e.target.value)}
                         value={trashChange}
                     />
                     %
-        </div>
+                </div>
             </Tooltip>
 
             <Tooltip title="selection percentage" placement="top">
                 <div className="grid-change-input">
                     Selection :
-            <input
+                    <input
                         type="number"
                         min="0"
                         max="100"
                         step="5"
-                        onChange={(e) => setSelectionPercetage(e.target.value)}
+                        onChange={e => setSelectionPercetage(e.target.value)}
                         value={selectionPercetage}
                     />
-                    %
-        </div>
+                </div>
             </Tooltip>
 
             <Tooltip title="number of iteration" placement="top">
                 <div className="grid-change-input">
                     Num. Iteration:
-            <input
+                    <input
                         type="number"
                         min="1"
                         step="1"
-                        onChange={(e) => setIteration(e.target.value)}
+                        onChange={e => setIteration(e.target.value)}
                         value={iteration}
                     />
-                    %
-        </div>
+                </div>
             </Tooltip>
 
             <Tooltip title="sample size" placement="top">
                 <div className="grid-change-input">
                     Sample Size:
-            <input
+                    <input
                         type="number"
                         min="1"
                         step="1"
-                        onChange={(e) => setSampleSize(e.target.value)}
+                        onChange={e => setSampleSize(e.target.value)}
                         value={sampleSize}
                     />
-                    %
-        </div>
+                </div>
             </Tooltip>
 
             <Tooltip title="Multiplier for moves score" placement="top">
                 <div className="grid-change-input">
                     Moves Multiplier:
-            <input
+                    <input
                         type="number"
                         step="1"
-                        onChange={(e) => setMovesMultiplier(e.target.value)}
+                        onChange={e => setMovesMultiplier(e.target.value)}
                         value={movesMultiplier}
                     />
-                    
-        </div>
+                </div>
             </Tooltip>
 
             <Tooltip title="Multiplier for Trash Collected" placement="top">
                 <div className="grid-change-input">
-                Trash Multiplier:
-            <input
+                    Trash Multiplier:
+                    <input
                         type="number"
                         step="1"
-                        onChange={(e) => setTrashCollectedMultiplier(e.target.value)}
+                        onChange={e =>
+                            setTrashCollectedMultiplier(e.target.value)
+                        }
                         value={trashCollectedMultiplier}
                     />
-            </div>
+                </div>
             </Tooltip>
+
+            <FormControlLabel
+                control={
+                    <Switch
+                        checked={displayGrid}
+                        onChange={() => setDisplayGrid(e => !e)}
+                        color="primary"
+                    />
+                }
+                label="Display Grid"
+                >
+                </FormControlLabel>
 
             <div>
                 <Tooltip title="Run Sample" placement="top">
-                    <Button className={classes.button} variant="contained" color="primary" onClick={handleRun}>
+                    <Button
+                        className={classes.button}
+                        variant="contained"
+                        color="primary"
+                        onClick={handleRun}>
                         {" "}
                         Run{" "}
                     </Button>
@@ -126,5 +165,4 @@ export default ({runGame, sampleSize, setSampleSize, selectionPercetage, setSele
             </div>
         </div>
     );
-
-}
+};

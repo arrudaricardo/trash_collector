@@ -16,6 +16,7 @@ const Selection = () => {
     const [trashCollectedMultiplier, setTrashCollectedMultiplier] = useState(10)
 
     // current run states
+    const [displayGrid, setDisplayGrid] = useState(true)
     const [running, setRunning] = useState(false)
     const [gridSize, setGridSize] = useState(5)
     const [trashChange, setTrashChange] = useState(10)
@@ -65,10 +66,12 @@ const Selection = () => {
          setMovesMultiplier={setMovesMultiplier}
          trashCollectedMultiplier={trashCollectedMultiplier}
          setTrashCollectedMultiplier={setTrashCollectedMultiplier}
+         displayGrid={displayGrid}
+         setDisplayGrid={setDisplayGrid}
           />
         {(gridArray !== null) &&
             <div style={{ display: 'flex', padding: '0.1em' }} >
-                <Grid gridArray={gridArray[0]} />
+               {displayGrid &&  <Grid gridArray={gridArray[0]} /> }
                 <Result robots={robots} gridArray={gridArray} />
             </div>
         }

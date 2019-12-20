@@ -57,7 +57,6 @@ export default () => {
                     <Route path="/results">
                         <Results />
                     </Route>
-
                     <Route path="/selection">
                         <Selection />
                     </Route>
