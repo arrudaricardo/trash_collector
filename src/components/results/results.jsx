@@ -45,7 +45,11 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(1)
     },
     inputs: {
-        display: "flex"
+        display: "flex",
+        alignItems: "center",
+        margin: theme.spacing(1),
+        maxWidth: '30em',
+        margin: 'auto'
     }
 }));
 
@@ -136,6 +140,7 @@ export default function Results() {
 
                 <Tooltip title="Multiplier for moves score" placement="top">
                     <TextField
+                            style={{width: '11em'}}
                             id="filled-number"
                             label="Moves Multiplier"
                             type="number"
@@ -173,6 +178,7 @@ export default function Results() {
                     </Tooltip>
                 </IconButton>
             </div>
+
             <Paper className={classes.root}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead className={classes.header}>

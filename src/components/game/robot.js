@@ -271,7 +271,6 @@ export default function Robot() {
 
     return (
         <div style={{ display: "flex", justifyContent: "end" }}>
-            <div>
                 <Tooltip enterDelay={500} title="Start Game">
                     <Button
                         disabled={runTimes === 0}
@@ -317,7 +316,6 @@ export default function Robot() {
                 {/* <SwitchMode setMode={setMode} mode={mode} />
                 {mode === "dev" && <div>StateId: {gridState.stateSum} </div>} */}
 
-            </div>
             <div className="robot-information">
                 <div className="trashColleted">
                     Trash Collected: {state.grid.trashColleted}
