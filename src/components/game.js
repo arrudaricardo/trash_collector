@@ -37,16 +37,11 @@ const initialState = {
 export default () => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    // logger
-    // useEffect(() => {
-    // console.log(state);
-    // });
-
     return (
         <>
             <CssBaseline />
             <NavBar />
-            <Container className="container" maxWidth="sm" justify="center">
+            <Container className="container" maxWidth="lg" justify="center">
                 <Pcontext.Provider value={{ state, dispatch }}>
                     <Route exact path="/">
                         <Grid />

@@ -40,11 +40,14 @@ export default ({
     }
 
     return (
+
         <div
             style={{
                 display: "flex",
                 flexWrap: "wrap",
-                justifyContent: "space-evenly"
+                justifyContent: "space-evenly",
+                maxWidth: '40em'
+
             }}
             className="grid-input">
             <Tooltip title={`size of grid: ${gridSize}x${gridSize}`} placement="top">

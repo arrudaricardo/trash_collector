@@ -1,7 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Fade from '@material-ui/core/Fade';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from './display_run'
 import Result from './selection_results'
 
@@ -10,9 +8,15 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
+    flexWrap: 'wrap'
   },
   placeholder: {
-    height: 40,
+
+    justifyContent: 'center',
+    display: 'flex',
+    padding: '0.3em',
+    flexWrap: 'wrap'
   },
 }));
 
@@ -24,7 +28,7 @@ export default function Display({running:loading, gridArray, robots, displayGrid
     <div className={classes.root}>
 
         {(gridArray !== null) &&
-            <div style={{ display: 'flex', padding: '0.1em' }} >
+            <div className={classes.placeholder}>
               {displayGrid &&  <Grid gridArray={gridArray[0]} /> }
 
               { !loading && 

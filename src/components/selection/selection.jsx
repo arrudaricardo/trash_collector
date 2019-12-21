@@ -49,7 +49,8 @@ const Selection = () => {
         }
     }, [gridArray])
 
-    return (<div >
+    return (
+    <>
         <Controller runGame={runGame}
          sampleSize={sampleSize} 
          setSampleSize={setSampleSize}
@@ -71,7 +72,7 @@ const Selection = () => {
           />
         <Display displayGrid={displayGrid} running={running} gridArray={gridArray} robots={robots}/>
         
-    </div>)
+    </>)
 }
 
 function robotIteration(robots, gridArray, robotPos, setGridArray, selectionPercetage,  movesMultiplier, trashCollectedMultiplier) {
