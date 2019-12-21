@@ -29,7 +29,8 @@ export default ({
     trashCollectedMultiplier,
     setTrashCollectedMultiplier,
     displayGrid,
-    setDisplayGrid
+    setDisplayGrid,
+    running
 }) => {
     const classes = useStyles();
 
@@ -154,6 +155,7 @@ export default ({
             <div>
                 <Tooltip title="Run Sample" placement="top">
                     <Button
+                        disabled={running}
                         className={classes.button}
                         variant="contained"
                         color="primary"

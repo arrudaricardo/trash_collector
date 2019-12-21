@@ -3,6 +3,7 @@ import { genRobots, generateGridArray, runRobot } from '../util'
 import Grid from './display_run'
 import Controller from './selection_controller'
 import Result from './selection_results'
+import Display from './display'
 
 //Number of states (2 * 3**4 ) = 162 - 25 =  (137 possible states)
 
@@ -16,7 +17,7 @@ const Selection = () => {
     const [trashCollectedMultiplier, setTrashCollectedMultiplier] = useState(10)
 
     // current run states
-    const [displayGrid, setDisplayGrid] = useState(true)
+    const [displayGrid, setDisplayGrid] = useState(false)
     const [running, setRunning] = useState(false)
     const [gridSize, setGridSize] = useState(5)
     const [trashChange, setTrashChange] = useState(10)
@@ -68,13 +69,10 @@ const Selection = () => {
          setTrashCollectedMultiplier={setTrashCollectedMultiplier}
          displayGrid={displayGrid}
          setDisplayGrid={setDisplayGrid}
+         running={running}
           />
-        {(gridArray !== null) &&
-            <div style={{ display: 'flex', padding: '0.1em' }} >
-               {displayGrid &&  <Grid gridArray={gridArray[0]} /> }
-                <Result robots={robots} gridArray={gridArray} />
-            </div>
-        }
+        <Display displayGrid={displayGrid} running={running} gridArray={gridArray} robots={robots}/>
+        
     </div>)
 }
 
@@ -127,7 +125,6 @@ function selectRobotsByScore(robots, seletionPercetage) {
         }
     }
 
-    console.log({selectedRobots})
     return selectedRobots
 }
 
