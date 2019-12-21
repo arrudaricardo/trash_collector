@@ -3,9 +3,6 @@ import { genRobots, generateGridArray, runRobot } from '../util'
 import Controller from './selection_controller'
 import Display from './display'
 
-//Number of states (2 * 3**4 ) = 162 - 25 =  (137 possible states)
-
-
 const Selection = () => {
     const [sampleSize, setSampleSize] = useState(10)
     const [selectionPercetage, setSelectionPercetage] = useState(30)
@@ -28,29 +25,24 @@ const Selection = () => {
             setRunning(true);
             return generateGridArray(gridSize, trashChange)
         })
-
     }
 
     useEffect(() => {
         // run robots iteration
         if (running) {
             let runRobots = [...robots]
-
             // run N iteration for initial robot array
             for (let i = 0; i < iteration; i++) {
                 let selectedRobots = robotIteration(runRobots, gridArray[0], gridArray[1], setGridArray, selectionPercetage, movesMultiplier, trashCollectedMultiplier)
                 runRobots = selectedRobots
             }
-
             setRobots(runRobots)
-
-
             setRunning(false)
         }
     }, [gridArray])
 
     return (
-    <>
+    <div style={{display:'flex', flexDirection:'column', alignContent:"center"}}>
         <Controller runGame={runGame}
          sampleSize={sampleSize} 
          setSampleSize={setSampleSize}
@@ -72,7 +64,7 @@ const Selection = () => {
           />
         <Display displayGrid={displayGrid} running={running} gridArray={gridArray} robots={robots}/>
         
-    </>)
+    </div>)
 }
 
 function robotIteration(robots, gridArray, robotPos, setGridArray, selectionPercetage,  movesMultiplier, trashCollectedMultiplier) {

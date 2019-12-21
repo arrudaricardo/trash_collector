@@ -6,14 +6,15 @@ import Result from './selection_results'
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'column',
     flexWrap: 'wrap'
   },
   placeholder: {
 
     justifyContent: 'center',
+    flexDirection: 'row',
     display: 'flex',
     padding: '0.3em',
     flexWrap: 'wrap'

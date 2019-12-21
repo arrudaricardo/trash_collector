@@ -72,6 +72,9 @@ export default function Results({ robots, gridArray }) {
     });
   }
 
+    const handleChangeGameName = () => {
+        dispatch({type:'changeGameName', payload: 'Robot'})
+    };
 
   return (
     <div>
@@ -112,6 +115,7 @@ export default function Results({ robots, gridArray }) {
                             setMessage("Robot Added to Game/Build");
                             setVariant('success')
                             setOpen(true)
+                            handleChangeGameName()
                           }
                           } fontSize='small' />
                         </IconButton>

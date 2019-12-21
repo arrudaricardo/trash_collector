@@ -40,13 +40,14 @@ export default ({
     }
 
     return (
-
         <div
             style={{
                 display: "flex",
                 flexWrap: "wrap",
+                flexDirection: 'row',
                 justifyContent: "space-evenly",
-                maxWidth: '40em'
+                maxWidth: '40em',
+                margin: 'auto'
 
             }}
             className="grid-input">
