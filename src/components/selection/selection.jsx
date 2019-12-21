@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { genRobots, generateGridArray, runRobot } from '../util'
-import Grid from './display_run'
 import Controller from './selection_controller'
-import Result from './selection_results'
 import Display from './display'
 
 //Number of states (2 * 3**4 ) = 162 - 25 =  (137 possible states)

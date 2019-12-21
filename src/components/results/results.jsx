@@ -47,9 +47,13 @@ const useStyles = makeStyles(theme => ({
     inputs: {
         display: "flex",
         alignItems: "center",
-        margin: theme.spacing(1),
-        maxWidth: '30em',
-        margin: 'auto'
+        maxWidth: '38em',
+        margin: 'auto',
+        flexWrap: 'wrap'
+    },
+    multiplier: {
+        display: "flex",
+        maxWidth: '20em',
     }
 }));
 
@@ -127,7 +131,7 @@ export default function Results() {
                     <Select
                         id="select-name"
                         value={selectName}
-                            margin="dense"
+                        margin="normal"
                         onChange={handleChangeName}
                     >
                         {[...new Set(state.results.map(el => el.gameName))].map(gameName =>
@@ -138,13 +142,15 @@ export default function Results() {
                     </Select>
                 </FormControl>
 
+                <div className={classes.multiplier}> 
                 <Tooltip title="Multiplier for moves score" placement="top">
                     <TextField
-                            style={{width: '11em'}}
+                            style={{paddingLeft:'0.4em', paddingRight:'0.4em'}}
                             id="filled-number"
                             label="Moves Multiplier"
                             type="number"
                             margin="dense"
+                            size="small"
                             min="0"
                             step="1"
                             onChange={(e) => dispatch({type:"changeMovesMultiplier", value: e.target.value})}
@@ -158,6 +164,7 @@ export default function Results() {
                             label="Trash Multiplier"
                             type="number"
                             margin="dense"
+                            size="small"
                             InputLabelProps={{
                                 shrink: true,
                             }}
@@ -167,7 +174,7 @@ export default function Results() {
                             value={state.grid.trashMultiplier}
                             />
                 </Tooltip>
-
+</div>
                 <IconButton
                     onClick={deleteGameResult}
                     className={classes.delete}
