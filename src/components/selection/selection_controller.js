@@ -47,7 +47,7 @@ export default ({
                 justifyContent: "space-evenly"
             }}
             className="grid-input">
-            <Tooltip title={`size: ${gridSize}x${gridSize}`} placement="top">
+            <Tooltip title={`size of grid: ${gridSize}x${gridSize}`} placement="top">
                 <div className="grid-size-input">
                     Grid Size:
                     <input
@@ -59,7 +59,7 @@ export default ({
                 </div>
             </Tooltip>
 
-            <Tooltip title="chance per slot" placement="top">
+            <Tooltip title="chance per slot of having a trash" placement="top">
                 <div className="grid-change-input">
                     Trash Chance:
                     <input
@@ -74,9 +74,9 @@ export default ({
                 </div>
             </Tooltip>
 
-            <Tooltip title="selection percentage" placement="top">
+            <Tooltip title="selection percentage to be selected per iteration" placement="top">
                 <div className="grid-change-input">
-                    Selection :
+                    Selection:
                     <input
                         type="number"
                         min="0"
@@ -85,10 +85,11 @@ export default ({
                         onChange={e => setSelectionPercetage(e.target.value)}
                         value={selectionPercetage}
                     />
+                    %
                 </div>
             </Tooltip>
 
-            <Tooltip title="number of iteration" placement="top">
+            <Tooltip title="number of iteration for each sample" placement="top">
                 <div className="grid-change-input">
                     Num. Iteration:
                     <input

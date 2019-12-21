@@ -11,7 +11,7 @@ import Display from './display'
 const Selection = () => {
     const [sampleSize, setSampleSize] = useState(10)
     const [selectionPercetage, setSelectionPercetage] = useState(30)
-    const [iteration, setIteration] = useState(10)
+    const [iteration, setIteration] = useState(30)
     const [robots, setRobots] = useState(null)
     const [movesMultiplier, setMovesMultiplier] = useState(1)
     const [trashCollectedMultiplier, setTrashCollectedMultiplier] = useState(10)
@@ -20,7 +20,7 @@ const Selection = () => {
     const [displayGrid, setDisplayGrid] = useState(false)
     const [running, setRunning] = useState(false)
     const [gridSize, setGridSize] = useState(5)
-    const [trashChange, setTrashChange] = useState(10)
+    const [trashChange, setTrashChange] = useState(20)
     const [gridArray, setGridArray] = useState(null)
 
 
