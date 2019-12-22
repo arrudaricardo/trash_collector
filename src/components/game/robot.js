@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import SwitchMode from "./switch_mode";
 import { checkRobotState, infinitLoop} from "../util";
 import RobotStateDisplay from "./robot_state_display";
 import Button from "@material-ui/core/Button";

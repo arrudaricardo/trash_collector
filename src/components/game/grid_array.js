@@ -8,16 +8,15 @@ export default () => {
      let grid = state.grid.gridArray.map((row, idx) => {
         const rows = row.map((e, idx2) => {
             return (
-
                 <Box
-                    key={e[0]}
+                    key={`${e[0]}`}
                     hasRobot={e[2]}
                     hasTrash={e[1]}
                 />
             );
         });
 
-        return <div id={idx} className="gridRow"> {rows} </div>;
+        return <div key={idx} className="gridRow"> {rows} </div>;
     });
 
     return <div className="gridContainer"> {grid} </div>
