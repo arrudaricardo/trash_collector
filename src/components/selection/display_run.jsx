@@ -17,7 +17,7 @@ export default ({gridArray}) => {
             );
         });
 
-        return <div id={idx} className="gridRow"> {rows} </div>;
+        return <div key={idx} className="gridRow"> {rows} </div>;
     });
 
     return <div className="gridContainer"> {grid} </div>

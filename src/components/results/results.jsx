@@ -151,8 +151,7 @@ export default function Results() {
                             type="number"
                             margin="dense"
                             size="small"
-                            min="0"
-                            step="1"
+                            inputProps={{step: 1, min:0}}
                             onChange={(e) => dispatch({type:"changeMovesMultiplier", value: e.target.value})}
                             value={state.grid.movesMultiplier}
                             />
@@ -168,8 +167,7 @@ export default function Results() {
                             InputLabelProps={{
                                 shrink: true,
                             }}
-                            min="0"
-                            step="1"
+                            inputProps={{step: 1, min:0}}
                             onChange={(e) => dispatch({type:"changeTrashMultiplier", value: e.target.value})}
                             value={state.grid.trashMultiplier}
                             />

@@ -55,32 +55,30 @@ export default () => {
 return (
     <div className={classes.input}>
 
-        <Tooltip title={`size: ${state.grid.gridSize}x${state.grid.gridSize}`}placement="top">
+        <Tooltip title={`size of the grid:${state.grid.gridSize}x${state.grid.gridSize}`}placement="top">
             <TextField
                     className={classes.textField}
                     style={{width: '200px'}}
+                    inputProps={{step: 1, min:2}}
                     label="Grid Size"
                     type="number"
                     margin="dense"
-                    min="1"
-                    step="1"
                     onChange={handleGridChange}
                     value={state.grid.gridSize}
                     />
         </Tooltip>
 
-        <Tooltip title="chance per slot"placement="top">
+        <Tooltip title="chance per slot of having a trash"placement="top">
             <TextField
                     style={{width: '15em'}}
-                    label="Trash Chance"
+                    label="Trash %"
                     type="number"
                     margin="dense"
-                    min="0"
-                    max="100"
-                    step="5"
+                    inputProps={{step: 5, min:0, max:100}}
                     onChange={handleChanceChange}
                     value={state.grid.chanceOfTrash}
                     />
+                    
             </Tooltip>
 
         <Tooltip title="Robot Name"placement="top">
