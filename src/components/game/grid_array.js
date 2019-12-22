@@ -10,8 +10,7 @@ export default () => {
             return (
 
                 <Box
-                    key={Number(`${idx}${idx2}`)}
-                    id={e[0]}
+                    key={e[0]}
                     hasRobot={e[2]}
                     hasTrash={e[1]}
                 />

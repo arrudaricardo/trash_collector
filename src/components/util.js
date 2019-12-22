@@ -1,5 +1,3 @@
-import { func } from "prop-types";
-
 export const stateValues = {
     left: { trash: 2, empty: 3, wall: 5 },
     right: { trash: 7, empty: 11, wall: 13 },
@@ -123,18 +121,6 @@ function formCombination(odometer, array_of_arrays) {
         s_output += " " + array_of_arrays[i][odometer[i]];
     }
     return s_output;
-
-    // In Functional Programmingese (Henny Youngman one-liner):
-    // return odometer.reduce(function(
-    //     accumulator,
-    //     odometer_value,
-    //     odometer_index
-    // ) {
-    //     return (
-    //         "" + accumulator + array_of_arrays[odometer_index][odometer_value]
-    //     );
-    // },
-    // "");
 }
 
 function odometer_increment(odometer, array_of_arrays) {
@@ -482,32 +468,10 @@ function getGridArrayStateSum(gridArray) {
             if (box[2]){ // has robot
                 robotPos = boxNum
             }
-            // stateSum += boxNum
 
             boxNum++;
         }
     }
     return [stateSum, robotPos]
 }
-
-let primes = [2,3,5,7]
-function prime(n){
-    let lastPrime = primes[primes.length - 1] + 1
-    while (true) {
-        if (isPrime(lastPrime)){
-            primes.push(lastPrime)
-            return true
-        }
-        lastPrime++
-    }
-
-}
-
-function isPrime(num){
-    for(let i = 2; i < num; i++){
-        if (num % i === 0) return false
-    }
-    return true
-}
-
 
