@@ -1,7 +1,11 @@
 import React from "react";
 
 import trashImg from "../../static/img/trash.png";
-import robotImg from "../../static/img/robot.png";
+import robotImg from "../../static/img/santarobot.png"
+import robotSanta from "../../static/img/santarobot.png"
+
+let robotSrc = new Date().getMonth() === 11? robotSanta: robotImg 
+
 
 export default function Box({
     id,
@@ -26,7 +30,7 @@ export default function Box({
             }
             `}
         >
-            {hasRobot && <img id="robotImg" src={robotImg} alt="" />}
+            {hasRobot && <img id="robotImg" src={robotSrc} alt="" />}
             {hasTrash && <img id="trashImg" src={trashImg} alt="" />}
             <div className="position-id">{id && `${id[0]}-${id[1]}`}</div>
         </div>

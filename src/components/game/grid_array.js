@@ -9,6 +9,7 @@ export default () => {
         const rows = row.map((e, idx2) => {
             return (
                 <Box
+                    id={e[0]}
                     key={`${e[0]}`}
                     hasRobot={e[2]}
                     hasTrash={e[1]}
