@@ -27,15 +27,15 @@ export default function PButton({gridState, action ,stateSum}) {
 
     return (
         <>
-            <Grid item justify='center' wrap="wrap" alignContent='stretch' xs={12} md={6} >
-              <Grid container spacing={1} direction="column" alignItems="left" >
+            <Grid item xs={12} md={6} >
+              <Grid container spacing={1} direction="column" alignItems="flex-start" >
                 <ButtonGroup
                     size="small"
                     aria-label="small outlined button group"
                 >
                     <Button disabled={!(gridState.current === 'trash')}
                         variant="contained"
-                        color={action ==='getTrash'?"primary": ""}
+                        color={action ==='getTrash'?"primary": "default"}
                         className={classes.button}
                         onClick={()=> addPosibilities('getTrash')}
                     >
@@ -43,14 +43,14 @@ export default function PButton({gridState, action ,stateSum}) {
                     </Button>
                 </ButtonGroup>
                 </Grid>
-                <Grid container spacing={3}  direction="column" alignItems="left">
+                <Grid container spacing={3}  direction="column" alignItems="flex-start">
                 <ButtonGroup
                     size="small"
                     aria-label="small outlined button group"
                 >
                     <Button disabled={gridState.up === 'wall'}
                         variant="contained"
-                        color={action === 'up'? "primary": ""}
+                        color={action === 'up'? "primary": "default"}
                         className={classes.button}
                         onClick={()=> addPosibilities('up')}
                     >
@@ -58,7 +58,7 @@ export default function PButton({gridState, action ,stateSum}) {
                     </Button>
                     <Button disabled={gridState.down === 'wall'}
                         variant="contained"
-                        color={action === 'down'? "primary": ""}
+                        color={action === 'down'? "primary": "default"}
                         className={classes.button}
                         onClick={()=> addPosibilities('down')}
                     >
@@ -67,14 +67,14 @@ export default function PButton({gridState, action ,stateSum}) {
                     <Button disabled={gridState.left === 'wall'}
                         variant="contained"
                         className={classes.button}
-                        color={action === 'left' ? "primary" : ""}
+                        color={action === 'left' ? "primary" : "default"}
                         onClick={()=> addPosibilities('left')}
                     >
                          Left
                     </Button>
                     <Button disabled={gridState.right === 'wall'}
                         variant="contained"
-                        color={action === 'right'? "primary": ""}
+                        color={action === 'right'? "primary": "default"}
                         className={classes.button}
                         onClick={()=> addPosibilities('right')}
                     >
@@ -83,7 +83,7 @@ export default function PButton({gridState, action ,stateSum}) {
                     <Tooltip title='Move to random direction'>
                     <Button
                         variant="contained"
-                        color={action === 'random'? "primary": ""}
+                        color={action === 'random'? "primary": "default"}
                         className={classes.button}
                         onClick={()=> addPosibilities('random')}
                     >

@@ -131,7 +131,7 @@ export default function Results() {
                     <Select
                         id="select-name"
                         value={selectName}
-                        margin="normal"
+                        margin="none"
                         onChange={handleChangeName}
                     >
                         {[...new Set(state.results.map(el => el.gameName))].map(gameName =>

@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
 export default function Results({ robots, gridArray }) {
 
   const [message, setMessage] = useState(null)
-  const [variant, setVariant] = useState(null)
+  const [variant, setVariant] = useState('success')
   const [open, setOpen] = useState(false);
   const { _, dispatch } = useContext(Pcontext);
   const classes = useStyles();
@@ -109,15 +109,15 @@ export default function Results({ robots, gridArray }) {
                     </TableCell>
                     <TableCell align='left' padding='none'>
                       <Tooltip title='load robot' placement='right'>
-                        <IconButton size='small' color="primary" component="span">
-                          <AddIcon onClick={(e) => {
+                        <IconButton onClick={(e) => {
                             addRobotPossibilities(e, robot);
                             setMessage("Robot Added to Game/Build");
                             setVariant('success')
                             setOpen(true)
                             handleChangeGameName()
                           }
-                          } fontSize='small' />
+                          } size='small' color="primary" component="span">
+                          <AddIcon  fontSize='small' />
                         </IconButton>
                       </Tooltip>
                     </TableCell>

@@ -130,7 +130,7 @@ const Pgrid = () => {
                         onChange={handleNameSelect}
                     >
                         {Object.keys(state.moves).map(name => (
-                            <MenuItem value={name}>{name}</MenuItem>
+                            <MenuItem key={name} value={name}>{name}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
